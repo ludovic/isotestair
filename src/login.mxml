@@ -6,25 +6,12 @@
 			import merapi.messages.Message;
 			import util.DataSource;
 			import flexunit.framework.TestSuite;
-			
-		
 
 			private function load():void {
-				var dataString:String;
-				var data:DataSource;
-				var output:IDataOutput;
-				
-				data = new DataSource();
-				data.login=login2.text;
-				data.mdp=mdp.text;
-				data.type="type";
-				data.url=url2.text;
-				
-				data.writeExternal(output);
-				
-				output.writeUTF(dataString);
-				
-			bridge.sendMessage( new Message( 'dataSource', null, dataString ) );
+				var st : String = new String();
+				st = "";
+				st = st + login2.text + "##" + mdp.text + "##" + "Oracle" + "##" +url2.text;
+			bridge.sendMessage( new Message( 'dataSource', null, st ) );
 			}
 			
 		

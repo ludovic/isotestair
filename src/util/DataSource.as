@@ -3,7 +3,7 @@ package util
 {
 import flash.utils.IExternalizable;
 import flash.utils.IDataInput;
-import flash.utils.IDataOutput;
+	import flash.utils.IDataOutput;
 
 	public class DataSource implements IExternalizable {
 	
@@ -12,6 +12,8 @@ import flash.utils.IDataOutput;
 	public var url:String;
 	public var type:String;
 	
+		public function DataSource(){
+		}
 	 public function readExternal(input:IDataInput):void {
        	login = input.readObject() as String;
        	mdp = input.readObject() as String;
