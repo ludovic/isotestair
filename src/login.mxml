@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:flexunit="flexunit.flexui.*"
+  xmlns:merapi="merapi.*" layout="absolute">
+<mx:Script>
+		<![CDATA[
+			import merapi.messages.Message;
+			import util.DataSource;
+			import flexunit.framework.TestSuite;
+			
+		
+
+			private function load():void {
+				var dataString:String;
+				var data:DataSource;
+				var output:IDataOutput;
+				
+				data = new DataSource();
+				data.login=login2.text;
+				data.mdp=mdp.text;
+				data.type="type";
+				data.url=url2.text;
+				
+				data.writeExternal(output);
+				
+				output.writeUTF(dataString);
+				
+			bridge.sendMessage( new Message( 'dataSource', null, dataString ) );
+			}
+			
+		
+		]]>
+	</mx:Script>
+	
+	<merapi:BridgeInstance id="bridge" 
+	  result="{ responseText.text += bridge.lastMessage.timestamp.toString() + 
+	  								 ' - ' +
+	  								 bridge.lastMessage.data.toString() + 
+	  								 '\n'; }" />
+	
+	<mx:Form x="50" y="47" width="330" height="144">
+		<mx:FormItem label="Login">
+			<mx:TextInput id="login2"/>
+		</mx:FormItem>
+		<mx:FormItem label="Mot de passe">
+			<mx:TextInput id="mdp"/>
+		</mx:FormItem>
+		<mx:FormItem label="Type">
+			<mx:ComboBox id="type2"></mx:ComboBox>
+		</mx:FormItem>
+		<mx:FormItem label="URL">
+			<mx:TextInput id="url2"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:Button label="Test" x="173" y="208" click="load()" />
+	<mx:TextArea x="50" y="238" width="330" height="125" id="responseText"/>
+	
+</mx:WindowedApplication>
