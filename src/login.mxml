@@ -17,7 +17,7 @@
 				data = new DataSource();
 				data.login=login2.text;
 				data.mdp=mdp.text;
-				data.type="type";
+				data.type=type2.selectedItem.valueOf() as String;
 				data.url=url2.text;
 				
 				data.writeExternal(output);
@@ -45,7 +45,9 @@
 			<mx:TextInput id="mdp"/>
 		</mx:FormItem>
 		<mx:FormItem label="Type">
-			<mx:ComboBox id="type2"></mx:ComboBox>
+			<mx:ComboBox id="type2">
+				
+			</mx:ComboBox>
 		</mx:FormItem>
 		<mx:FormItem label="URL">
 			<mx:TextInput id="url2"/>
