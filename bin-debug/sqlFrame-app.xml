@@ -14,14 +14,14 @@
 -->
 
 	<!-- The application identifier string, unique to this application. Required. -->
-	<id>com.login</id>
+	<id>sqlFrame</id>
 
 	<!-- Used as the filename for the application. Required. -->
-	<filename>login</filename>
+	<filename>sqlFrame</filename>
 
 	<!-- The name that is displayed in the AIR application installer. 
 	     May have multiple values for each language. See samples or xsd schema file. Optional. -->
-	<name>login</name>
+	<name>sqlFrame</name>
 
 	<!-- An application version designator (such as "v1", "2.5", or "Alpha 1"). Required. -->
 	<version>v1</version>
@@ -37,7 +37,7 @@
 	<initialWindow>
 		<!-- The main SWF or HTML file of the application. Required. -->
 		<!-- Note: In Flex Builder, the SWF reference is set automatically. -->
-		<content>login.swf</content>
+		<content>sqlFrame.swf</content>
 		
 		<!-- The title of the main window. Optional. -->
 		<!-- <title></title> -->
