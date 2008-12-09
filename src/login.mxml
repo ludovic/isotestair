@@ -26,6 +26,7 @@
 <mx:Script>
 		<![CDATA[
 			import merapi.messages.Message;
+			import mx.controls.Alert; 
 			import util.DataSource;
 			import util.TypeBD;
 			import flexunit.framework.TestSuite;
@@ -49,17 +50,16 @@
 			  
 		
 				if ((event.result as Message).type=='testBase'){
-					responseText.text += bridge.lastMessage.timestamp.toString() + 
-	  									 ' - ' +
-	  									 bridge.lastMessage.data.toString() + 
+					responseText.text += bridge.lastMessage.data.toString() + 
 	  									 '\n';
 	  				if (bridge.lastMessage.data.toString()=="Succes")
 	  				{
 	  					connect.enabled=true;
 	  				}
-	  			}else if (bridge.lastMessage.sourceType=='sqlResult'){
-	  				 
+	  			}else if ((event.result as Message).type=='sqlResult'){
+	  				 Alert.show("ok");
 	  				var gridResult:ArrayCollection = ArrayCollection(bridge.lastMessage.data);
+	  				
 	  				sqlresult.dataProvider=gridResult;
 	  			}
 			}
