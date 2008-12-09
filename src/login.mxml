@@ -16,11 +16,14 @@
 				<mx:Button label="Executer" x="19.5" y="224" click="execute()"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:DataGrid width="397" height="181" x="19.5" y="254" id="sqlresult">
+				<mx:DataGrid width="397" height="151" x="19.5" y="327" id="sqlresult">
 					
 				</mx:DataGrid>
 			</mx:AddChild>
 			<mx:RemoveChild target="{connect}"/>
+			<mx:AddChild position="lastChild">
+				<mx:TextArea x="107.5" y="225" width="309" height="81" id="responseSQL"/>
+			</mx:AddChild>
 		</mx:State>
 	</mx:states>
 <mx:Script>
@@ -57,10 +60,13 @@
 	  					connect.enabled=true;
 	  				}
 	  			}else if ((event.result as Message).type=='sqlResult'){
-	  				 Alert.show("ok");
 	  				var gridResult:ArrayCollection = ArrayCollection(bridge.lastMessage.data);
 	  				
 	  				sqlresult.dataProvider=gridResult;
+	  			}
+	  			else if((event.result as Message).type=='sqlInfo'){
+	  				responseSQL.text+= bridge.lastMessage.data.toString() + 
+	  									 '\n';
 	  			}
 			}
 			private function execute():void{
