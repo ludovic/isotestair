@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:flexunit="flexunit.flexui.*" 
-  xmlns:merapi="merapi.*"  layout="absolute" width="438" height="490">
+  xmlns:merapi="merapi.*"  layout="absolute" width="438" height="510">
 	<mx:states>
 		<mx:State name="sql">
 			<mx:RemoveChild target="{responseText}"/>
-			<mx:RemoveChild target="{button1}"/>
 			<mx:RemoveChild target="{form1}"/>
 			<mx:AddChild position="lastChild">
 				<mx:Label text="SQL :" x="19.5" y="22"/>
@@ -24,6 +23,11 @@
 			<mx:AddChild position="lastChild">
 				<mx:TextArea x="107.5" y="225" width="309" height="81" id="responseSQL"/>
 			</mx:AddChild>
+			<mx:RemoveChild target="{canvas1}"/>
+			<mx:RemoveChild target="{canvas2}"/>
+			<mx:RemoveChild target="{typeParameter}"/>
+			<mx:RemoveChild target="{button1}"/>
+			
 		</mx:State>
 	</mx:states>
 <mx:Script>
@@ -45,8 +49,22 @@
 				connect.enabled=false;
 				var st : String = new String();
 				st = "";
-				st = st + login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" +url2.text;
+				
+			var type:String=type2.selectedItem.valueOf().label as String;
+				switch(type){
+					case "Oracle": 
+					st = st + login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:oracle:thin:@"+hostOracle.text+":"+portOracle.text+":"+sidOracle.text;
 			bridge.sendMessage( new Message( 'dataSource', null, st ) );
+					break;
+					case "SQL Server": 
+					st = st + login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:sqlserver://"+ipSQLserver.text+":"+portSQLserver.text+":";
+			bridge.sendMessage( new Message( 'dataSource', null, st ) );
+					break;
+					case "MySQL": 
+						st = st + login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:mysql://"+ipMySQL.text+":"+portMySQL.text+"/";
+			bridge.sendMessage( new Message( 'dataSource', null, st ) );
+					break;
+				}
 			}
 			
 			private function result(event : ResultEvent): void{
@@ -69,6 +87,20 @@
 	  									 '\n';
 	  			}
 			}
+			private function selectChange():void{
+				var type:String=type2.selectedItem.valueOf().label as String;
+				switch(type){
+					case "Oracle": 
+					typeParameter.selectedIndex=0;
+					break;
+					case "SQL Server": 
+					typeParameter.selectedIndex=2;
+					break;
+					case "MySQL": 
+					typeParameter.selectedIndex=1;
+					break;
+				}
+			}
 			private function execute():void{
 				bridge.sendMessage( new Message( 'sqlRequest', null, requette.text ) );
 			}
@@ -79,7 +111,7 @@
 	
 	<merapi:BridgeInstance id="bridge" result="result(event)" />
 	
-	<mx:Form x="50" y="47" width="330" height="144" id="form1">
+	<mx:Form x="50" y="34" width="330" height="117" id="form1">
 		<mx:FormItem label="Login">
 			<mx:TextInput id="login2"/>
 		</mx:FormItem>
@@ -87,17 +119,53 @@
 			<mx:TextInput id="mdp"/>
 		</mx:FormItem>
 		<mx:FormItem label="Type">
-			<mx:ComboBox id="type2" dataProvider="{typeProviders}" labelField="label">
+			<mx:ComboBox id="type2" dataProvider="{typeProviders}" labelField="label" change="selectChange()">
 			
 			</mx:ComboBox>
 		</mx:FormItem>
-		<mx:FormItem label="URL">
-			<mx:TextInput id="url2"/>
-		</mx:FormItem>
 	</mx:Form>
-	<mx:Button label="Connect" enabled="false" id="connect" click="currentState='sql'" x="214" y="199"/>
-	<mx:Button label="Test" x="156" y="199" click="load()"  id="button1"/>
-	<mx:TextArea x="50" y="238" width="330" height="125" id="responseText"/>
+	<mx:Button label="Connect" enabled="false" id="connect" click="currentState='sql'" x="214" y="314"/>
+	<mx:Button label="test"   click="load()" x="157" y="314" id="button1"/>
+	<mx:TextArea x="50" y="353" width="330" height="125" id="responseText"/>
+	<mx:ViewStack x="50" y="159"  width="330" height="147" id="typeParameter">
+		<mx:Canvas label="View 1" width="100%" height="100%" id="canvas1">
+			<mx:Form x="10" y="10" width="310" height="127">
+				<mx:FormItem label="Host" >
+					<mx:TextInput id="hostOracle"/>
+				</mx:FormItem>
+				<mx:FormItem label="Port" >
+					<mx:TextInput id="portOracle"/>
+				</mx:FormItem>
+				<mx:FormItem label="Sid" >
+					<mx:TextInput id="sidOracle"/>
+				</mx:FormItem>
+			</mx:Form>
+		</mx:Canvas>
+		<mx:Canvas label="mysql" width="100%" height="100%" id="canvas2">
+			<mx:Form x="28" y="10" width="253" height="83">
+				<mx:FormItem label="Host">
+					<mx:TextInput id="ipMySQL"/>
+				</mx:FormItem>
+				<mx:FormItem label="Port">
+					<mx:TextInput id="portMySQL" />
+				</mx:FormItem>
+			</mx:Form>
+			<mx:Button x="28" y="92" label="Choose DB" width="96"/>
+			<mx:ComboBox x="132" y="92" width="130"></mx:ComboBox>
+		</mx:Canvas>
+		<mx:Canvas label="sqlserver" width="100%" height="100%">
+			<mx:Form x="28" y="10" width="260" height="84">
+				<mx:FormItem label="Host">
+					<mx:TextInput id="ipSQLserver"/>
+				</mx:FormItem>
+				<mx:FormItem label="Port">
+					<mx:TextInput id="portSQLserver"/>
+				</mx:FormItem>
+			</mx:Form>
+			<mx:Button x="28" y="92" label="Retrieve DB"/>
+			<mx:ComboBox x="131" y="92" width="131"></mx:ComboBox>
+		</mx:Canvas>
+	</mx:ViewStack>
 	
 	
 </mx:WindowedApplication>
