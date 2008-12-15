@@ -38,34 +38,29 @@
 			import util.TypeBD;
 			import flexunit.framework.TestSuite;
 			import mx.collections.ArrayCollection;
-			
+			private var ds : String;
 		import mx.rpc.events.ResultEvent;		
 			
 			private function connection():void{
-				var st : String = new String();
-				st = "";
 				
 			var type:String=type2.selectedItem.valueOf().label as String;
 				switch(type){
 					case "Oracle": 
-					st = st + login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:oracle:thin:@"+hostOracle.text+":"+portOracle.text+":"+sidOracle.text;
-			bridge.sendMessage( new Message( 'dataSource', null, st ) );
+					ds = login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:oracle:thin:@"+hostOracle.text+":"+portOracle.text+":"+sidOracle.text;
 					break;
 					case "SQL Server": 
 						var db:String ="";
 						if(cmbDBSqlserver.selectedItem != null){
 							db =  ";database=" +cmbDBSqlserver.selectedItem.valueOf().NAME as String;
 						}
-						st = st + login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:sqlserver://"+ipSQLserver.text+":"+portSQLserver.text+db;
-						bridge.sendMessage( new Message( 'dataSource', null, st ) );
+						ds = login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:sqlserver://"+ipSQLserver.text+":"+portSQLserver.text+db;
 					break;
 					case "MySQL": 
 						var db:String ="";
 						if(cmbDBMysql.selectedItem != null){
 							db =  "/" +cmbDBMysql.selectedItem.valueOf().Database as String;
 						}
-						st = st + login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:mysql://"+ipMySQL.text+":"+portMySQL.text+db;
-						bridge.sendMessage( new Message( 'dataSource', null, st ) );
+						ds = login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:mysql://"+ipMySQL.text+":"+portMySQL.text+db;
 					break;
 				}
 				currentState='sql'
@@ -138,7 +133,7 @@
 				}
 			}
 			private function execute():void{
-				bridge.sendMessage( new Message( 'sqlRequest', null, requette.text ) );
+				bridge.sendMessage( new Message( 'sqlRequest', null, ds + "##" + requette.text ) );
 			}
 			private function getDBSqlServer():void{
 				var st: String = new String();
