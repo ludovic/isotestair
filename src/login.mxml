@@ -69,7 +69,7 @@
 				currentState='sql'
 			}
 			private function cancelQuery():void{
-				bridge.sendMessage( new Message( 'sqlRequest', null, "" ) );
+				bridge.sendMessage( new Message( 'sqlRequest', "cancel", "stop" ) );
 			}
 			
 			private var typeProviders:ArrayCollection = new ArrayCollection(
