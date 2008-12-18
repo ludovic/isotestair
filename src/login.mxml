@@ -27,6 +27,9 @@
 			<mx:RemoveChild target="{canvas2}"/>
 			<mx:RemoveChild target="{typeParameter}"/>
 			<mx:RemoveChild target="{button1}"/>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="19" y="284" label="Cancel" click="cancelQuery()"/>
+			</mx:AddChild>
 			
 		</mx:State>
 	</mx:states>
@@ -65,7 +68,9 @@
 				}
 				currentState='sql'
 			}
-			
+			private function cancelQuery():void{
+				bridge.sendMessage( new Message( 'sqlRequest', null, "" ) );
+			}
 			
 			private var typeProviders:ArrayCollection = new ArrayCollection(
 				[new TypeBD(0,"Oracle"),new TypeBD(2,"SQL Server"),new TypeBD(3,"MySQL")]);
@@ -133,7 +138,7 @@
 				}
 			}
 			private function execute():void{
-				bridge.sendMessage( new Message( 'sqlRequest', null, ds + "##" + requette.text ) );
+				bridge.sendMessage( new Message( 'sqlRequest', "request", ds + "##" + requette.text ) );
 			}
 			private function getDBSqlServer():void{
 				var st: String = new String();
