@@ -70,8 +70,8 @@
 						if(cmbDBMysql.selectedItem != null){
 							db =  "/" +cmbDBMysql.selectedItem.valueOf().Database as String;
 						}
-						st = st + login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:postgresql://"+ipPostgreSQL.text+":"+portPostgreSQL.text+db;
-						bridge.sendMessage( new Message( 'dataSource', null, st ) );
+						ds = ds + login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:postgresql://"+ipPostgreSQL.text+":"+portPostgreSQL.text+db;
+						
 					break;
 				}
 				currentState='sql'
@@ -235,7 +235,7 @@
 			<mx:Button x="28" y="102" label="Retrieve DB" click="getDBSqlServer()"/>
 			<mx:ComboBox x="131" y="102" width="157" id="cmbDBSqlserver" labelField="NAME"></mx:ComboBox>
 		</mx:Canvas>
-		<mx:Canvas label="postgresql" width="100%" height="100%">
+		<mx:Canvas label="postgresql" width="100%" height="100%" borderStyle="solid" borderColor="#DEDCDC">
 			<mx:Form x="28" y="10" width="278" height="84">
 				<mx:FormItem label="Host">
 					<mx:TextInput id="ipPostgreSQL" text="localhost" width="197"/>
