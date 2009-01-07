@@ -67,7 +67,7 @@
 					break;
 					case "PostgreSQL": 
 						var db:String ="";
-						if(cmbDBMysql.selectedItem != null){
+						if(cmbDBPostgresql.selectedItem != null){
 							db =  "/" +cmbDBMysql.selectedItem.valueOf().Database as String;
 						}
 						ds = ds + login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:postgresql://"+ipPostgreSQL.text+":"+portPostgreSQL.text+db;
@@ -102,7 +102,7 @@
 			bridge.sendMessage( new Message( 'dataSource', null, st ) );
 					break;
 					case "PostgreSQL": 
-						st = st + login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:postgresql://"+ipPostgreSQL.text+":"+portPostgreSQL.text;
+						st = st + login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:postgresql://"+ipPostgreSQL.text+":"+portPostgreSQL.text+"/postgres";
 			bridge.sendMessage( new Message( 'dataSource', null, st ) );
 					break;
 				}
@@ -171,8 +171,8 @@
 			}
 			private function getDBPostgreSql():void{
 				var st: String = new String();
-				st = st + login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:postgresql://"+ipPostgreSQL.text+":"+portPostgreSQL.text;
-				bridge.sendMessage( new Message( 'dataSource', "getDBPostgreSql", st ) );
+				st = st + login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:postgresql://"+ipPostgreSQL.text+":"+portPostgreSQL.text+"/postgres";
+				bridge.sendMessage( new Message( 'dataSource', "getDBPostgre", st ) );
 			}
 		]]>
 	</mx:Script>
@@ -245,7 +245,7 @@
 				</mx:FormItem>
 			</mx:Form>
 			<mx:Button x="28" y="102" label="Retrieve DB" click="getDBPostgreSql()"/>
-			<mx:ComboBox x="131" y="102" width="157" id="cmbDBPostgresql" labelField="NAME"></mx:ComboBox>
+			<mx:ComboBox x="131" y="102" width="157" id="cmbDBPostgresql" labelField="datname"></mx:ComboBox>
 		</mx:Canvas>
 	</mx:ViewStack>
 	
