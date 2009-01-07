@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:flexunit="flexunit.flexui.*" 
-  xmlns:merapi="merapi.*"  layout="absolute" width="438" height="548">
+  xmlns:merapi="merapi.*"  layout="absolute" width="448" height="558">
 	<mx:states>
 		<mx:State name="sql">
 			<mx:RemoveChild target="{responseText}"/>
 			<mx:RemoveChild target="{form1}"/>
 			<mx:AddChild position="lastChild">
-				<mx:Label text="SQL :" x="19.5" y="22"/>
+				<mx:Label text="SQL :" x="19.5" y="43"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:TextArea width="397" height="166" x="19.5" y="49" id="requette"/>
+				<mx:TextArea width="397" height="157" x="19.5" y="58" id="requette"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:Button label="Executer" x="19.5" y="224" click="execute()"/>
@@ -30,6 +30,9 @@
 			<mx:AddChild position="lastChild">
 				<mx:Button x="19" y="284" label="Cancel" click="cancelQuery()"/>
 			</mx:AddChild>
+			<mx:AddChild relativeTo="{canvas3}" position="lastChild">
+				<mx:Button x="10" y="462" label="Retour" click="currentState='';"/>
+			</mx:AddChild>
 			
 		</mx:State>
 	</mx:states>
@@ -41,6 +44,8 @@
 			import util.TypeBD;
 			import flexunit.framework.TestSuite;
 			import mx.collections.ArrayCollection;
+			import mx.events.FileEvent;
+    
 			private var ds : String;
 		import mx.rpc.events.ResultEvent;		
 			
@@ -74,7 +79,7 @@
 						
 					break;
 				}
-				currentState='sql'
+				currentState='sql';
 			}
 			private function cancelQuery():void{
 				bridge.sendMessage( new Message( 'sqlRequest', "cancel", "stop" ) );
@@ -174,11 +179,16 @@
 				st = st + login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:postgresql://"+ipPostgreSQL.text+":"+portPostgreSQL.text;
 				bridge.sendMessage( new Message( 'dataSource', "getDBPostgreSql", st ) );
 			}
+			
+			private function onChooseFile(e:FileEvent):void {
+			
+        output.text = e.file.nativePath;
+    }
 		]]>
 	</mx:Script>
 	<merapi:BridgeInstance id="bridge" result="result(event)" />
 	<mx:TabNavigator x="10" y="10" width="422" height="527">
-		<mx:Canvas label="Base de données" width="100%" height="100%">
+		<mx:Canvas label="Base de données" width="100%" height="100%" id="canvas3">
 	
 	
 	<mx:Form x="50" y="34" width="330" height="117" id="form1" borderStyle="solid" borderColor="#DEDCDC">
@@ -251,8 +261,10 @@
 	
 		</mx:Canvas>
 		<mx:Canvas label="Ficher" width="100%" height="100%">
-			<mx:FileSystemComboBox x="45" y="25"/>
-			<mx:FileSystemTree x="62" y="108"/>
+			<mx:FileSystemTree id="fileList" x="10" y="31" width="400" height="257" fileChoose="onChooseFile(event)"/>
+			<mx:Label x="10" y="5" text="Choose a file :"/>
+			<mx:TextInput x="10" y="296" width="400" id="output"/>
+			<mx:Button x="10" y="326" label="Ouvrir"/>
 		</mx:Canvas>
 	</mx:TabNavigator>
 	
