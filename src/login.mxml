@@ -68,9 +68,9 @@
 					case "PostgreSQL": 
 						var db:String ="";
 						if(cmbDBPostgresql.selectedItem != null){
-							db =  "/" +cmbDBMysql.selectedItem.valueOf().Database as String;
+							db =  "/" +cmbDBPostgresql.selectedItem.valueOf().datname as String;
 						}
-						ds = ds + login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:postgresql://"+ipPostgreSQL.text+":"+portPostgreSQL.text+db;
+						ds = login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:postgresql://"+ipPostgreSQL.text+":"+portPostgreSQL.text+db;
 						
 					break;
 				}
