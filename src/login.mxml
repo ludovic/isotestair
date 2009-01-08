@@ -112,9 +112,9 @@
 					break;
 				}
 			}
-			
+			var count : int=0;
 			private function result(event : ResultEvent): void{
-			  
+			  	
 		
 				if ((event.result as Message).type=='testBase'){
 					responseText.text += bridge.lastMessage.data.toString() + 
@@ -124,8 +124,9 @@
 	  					connect.enabled=true;
 	  				}
 	  			}else if ((event.result as Message).type=='sqlResult'){
-	  				var gridResult:ArrayCollection = ArrayCollection(bridge.lastMessage.data);
-	  				sqlresult.dataProvider=gridResult;
+	  			//	var gridResult:ArrayCollection = ArrayCollection(bridge.lastMessage.data);
+	  			//	sqlresult.dataProvider=gridResult;
+	  				trace(count++);
 	  			}
 	  			else if((event.result as Message).type=='sqlInfo'){
 	  				responseSQL.text+= bridge.lastMessage.data.toString() + 
