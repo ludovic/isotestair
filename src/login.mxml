@@ -138,23 +138,9 @@
 	  					connect.enabled=true;
 	  				}
 	  			}else if ((event.result as Message).type=='sqlResult'){
-<<<<<<< HEAD:src/login.mxml
-	  			//	var gridResult:ArrayCollection = ArrayCollection(bridge.lastMessage.data);
-	  			//	sqlresult.dataProvider=gridResult;
-	  				trace(count++);
-=======
-	  				var gridResult:ArrayCollection = ArrayCollection(bridge.lastMessage.data);
-	  				sqlresult.dataProvider=gridResult;
-	  			
-	  			
-	  			
-	  			
-	  			
-	  			
-	  			
-	  			
-	  			
->>>>>>> origin/master:src/login.mxml
+					loadFile();
+
+
 	  			}
 	  			
 	  			else if((event.result as Message).type=='sqlInfo'){
@@ -217,10 +203,11 @@
             
             private function loadFile():void{
             	            	
-            	var myFile:File = File.desktopDirectory.resolvePath("MyNewFile.txt");
+            	var myFile:File = File.desktopDirectory.resolvePath("DATA.dat");
                 var fileStream:FileStream = new FileStream();
                 fileStream.open(myFile, FileMode.READ);
-                var toto:Object = fileStream.readObject();
+                var toto:ArrayCollection = fileStream.readObject();
+	  			sqlresult.dataProvider=toto;
                 
             }
 		]]>
