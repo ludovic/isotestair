@@ -6,13 +6,10 @@
 			<mx:RemoveChild target="{responseText}"/>
 			<mx:RemoveChild target="{form1}"/>
 			<mx:AddChild position="lastChild">
-				<mx:Label text="SQL :" x="19.5" y="43"/>
-			</mx:AddChild>
-			<mx:AddChild position="lastChild">
 				<mx:TextArea width="397" height="157" x="19.5" y="58" id="requette"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button label="Executer" x="19.5" y="224" click="execute()"/>
+				<mx:Button label="Executer" x="19.5" y="224" click="execute()" id="button2"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:DataGrid width="397" height="151" x="19.5" y="327" id="sqlresult">
@@ -33,11 +30,27 @@
 			<mx:AddChild relativeTo="{canvas3}" position="lastChild">
 				<mx:Button x="10" y="462" label="Retour" click="currentState='';"/>
 			</mx:AddChild>
+			<mx:AddChild relativeTo="{canvas3}" position="lastChild">
+				<mx:Label text="SQL :" x="19.5" y="43"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{button2}" position="before">
+				<mx:Label text="SQL :" x="19.5" y="43"/>
+			</mx:AddChild>
+			<mx:RemoveChild target="{canvas4}"/>
 			
+		</mx:State>
+		<mx:State name="file">
+			<mx:RemoveChild target="{canvas3}"/>
+			<mx:RemoveChild target="{label1}"/>
+			<mx:RemoveChild target="{fileList}"/>
+			<mx:RemoveChild target="{output}"/>
+			<mx:RemoveChild target="{open}"/>
+			<mx:SetProperty target="{canvas4}" name="label" value="Fichier"/>
 		</mx:State>
 	</mx:states>
 <mx:Script>
 		<![CDATA[
+		
 			import merapi.messages.Message;
 			import mx.controls.Alert; 
 			import util.DataSource;
@@ -45,9 +58,10 @@
 			import flexunit.framework.TestSuite;
 			import mx.collections.ArrayCollection;
 			import mx.events.FileEvent;
+			import mx.rpc.events.ResultEvent;
     
 			private var ds : String;
-		import mx.rpc.events.ResultEvent;		
+				
 			
 			private function connection():void{
 				
@@ -124,10 +138,25 @@
 	  					connect.enabled=true;
 	  				}
 	  			}else if ((event.result as Message).type=='sqlResult'){
+<<<<<<< HEAD:src/login.mxml
 	  			//	var gridResult:ArrayCollection = ArrayCollection(bridge.lastMessage.data);
 	  			//	sqlresult.dataProvider=gridResult;
 	  				trace(count++);
+=======
+	  				var gridResult:ArrayCollection = ArrayCollection(bridge.lastMessage.data);
+	  				sqlresult.dataProvider=gridResult;
+	  			
+	  			
+	  			
+	  			
+	  			
+	  			
+	  			
+	  			
+	  			
+>>>>>>> origin/master:src/login.mxml
 	  			}
+	  			
 	  			else if((event.result as Message).type=='sqlInfo'){
 	  				responseSQL.text+= bridge.lastMessage.data.toString() + 
 	  									 '\n';
@@ -180,11 +209,20 @@
 				st = st + login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:postgresql://"+ipPostgreSQL.text+":"+portPostgreSQL.text+"/postgres";
 				bridge.sendMessage( new Message( 'dataSource', "getDBPostgre", st ) );
 			}
-			
+			private var fileresult : File;
 			private function onChooseFile(e:FileEvent):void {
-			
-        output.text = e.file.nativePath;
-    }
+			fileresult = new File(e.file.nativePath);
+                output.text = e.file.nativePath;
+            }
+            
+            private function loadFile():void{
+            	            	
+            	var myFile:File = File.desktopDirectory.resolvePath("MyNewFile.txt");
+                var fileStream:FileStream = new FileStream();
+                fileStream.open(myFile, FileMode.READ);
+                var toto:Object = fileStream.readObject();
+                
+            }
 		]]>
 	</mx:Script>
 	<merapi:BridgeInstance id="bridge" result="result(event)" />
@@ -261,11 +299,18 @@
 	</mx:ViewStack>
 	
 		</mx:Canvas>
-		<mx:Canvas label="Ficher" width="100%" height="100%">
+		<mx:Canvas label="Fichier" width="100%" height="100%" id="canvas4">
 			<mx:FileSystemTree id="fileList" x="10" y="31" width="400" height="257" fileChoose="onChooseFile(event)"/>
-			<mx:Label x="10" y="5" text="Choose a file :"/>
+			<mx:Label x="10" y="5" text="Choose a file :" id="label1"/>
 			<mx:TextInput x="10" y="296" width="400" id="output"/>
-			<mx:Button x="10" y="326" label="Ouvrir"/>
+			<mx:Button x="10" y="326" label="Ouvrir" id="open" click="loadFile()"/>
+			<mx:DataGrid x="10" y="356" height="113">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Column 1" dataField="col1"/>
+					<mx:DataGridColumn headerText="Column 2" dataField="col2"/>
+					<mx:DataGridColumn headerText="Column 3" dataField="col3"/>
+				</mx:columns>
+			</mx:DataGrid>
 		</mx:Canvas>
 	</mx:TabNavigator>
 	
