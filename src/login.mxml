@@ -137,8 +137,9 @@
 	  					connect.enabled=true;
 	  				}
 	  			}else if ((event.result as Message).type=='sqlResult'){
-					loadFile();
-
+				//	loadFile();
+               var gridResult:ArrayCollection = ArrayCollection(bridge.lastMessage.data);
+	  				sqlresult.dataProvider=gridResult;
 
 	  			}
 	  			
