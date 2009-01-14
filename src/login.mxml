@@ -48,6 +48,7 @@
 	
 <mx:Script>
 		<![CDATA[
+			import __AS3__.vec.Vector;
 		
 			import merapi.messages.Message;
 			import mx.controls.Alert; 
@@ -55,12 +56,14 @@
 			import util.TypeBD;
 			import flexunit.framework.TestSuite;
 			import mx.collections.ArrayCollection;
-			import mx.events.FileEvent;
+	 		import mx.events.FileEvent;
 			import mx.rpc.events.ResultEvent;
 			import flash.filesystem.File;
+			import com.probertson.utils.GZIPEncoder;
     
 			private var ds : String;
-			private var source:File;	
+			private var source:File;
+			private var providerSql:ArrayCollection=new ArrayCollection();	
 			
 			private function connection():void{
 				
@@ -136,13 +139,23 @@
 	  				{
 	  					connect.enabled=true;
 	  				}
-	  			}else if ((event.result as Message).type=='sqlResult'){
-				//	loadFile();
-               var gridResult:ArrayCollection = ArrayCollection(bridge.lastMessage.data);
-	  				sqlresult.dataProvider=gridResult;
-
 	  			}
+	  			else if ((event.result as Message).type=='sqlResultStart'){
+                    providerSql.removeAll();
+                    sqlresult.dataProvider=null;
+                }
+	  			else if ((event.result as Message).type=='sqlResult'){
+					addline(bridge.lastMessage.data as Array);
+					
+               //var gridResult:ArrayCollection = ArrayCollection(bridge.lastMessage.data);
+	  			//sqlresult.dataProvider=gridResult;
+                    
+	  			} 
 	  			
+                else if ((event.result as Message).type=='sqlResultStop'){
+                    
+                    sqlresult.dataProvider=providerSql;
+                }
 	  			else if((event.result as Message).type=='sqlInfo'){
 	  				responseSQL.text+= bridge.lastMessage.data.toString() + 
 	  									 '\n';
@@ -195,15 +208,36 @@
 				st = st + login2.text + "##" + mdp.text + "##" + (type2.selectedItem.valueOf().num) + "##" + "jdbc:postgresql://"+ipPostgreSQL.text+":"+portPostgreSQL.text+"/postgres";
 				bridge.sendMessage( new Message( 'dataSource_getDBPostgre', st ) );
 			}
-			
+			 
             
-            private function loadFile():void{
-            	            	
-            	var myFile:File = File.desktopDirectory.resolvePath("DATA.dat");
-                var fileStream:FileStream = new FileStream();
-                fileStream.open(myFile, FileMode.READ);
-                var toto:ArrayCollection = fileStream.readObject();
+            private function addline(array:Array):void{
+            	
+            	providerSql.addItem(array);
+            	
+            	
+            	
+            	
+            	/*            	Alert.show(path);
+            	var myFile:File = new File();
+            	myFile.nativePath=path; 
+            	var encoder:GZIPEncoder = new GZIPEncoder();
+            	//var fileStream:FileStream = new FileStream(); 
+            	       
+              var tata:ByteArray=encoder.uncompressToByteArray(myFile);
+             
+             // fileStream.readBytes(tata,0,0);  
+             // var toto:ArrayCollection:
+              var toto:ArrayCollection=tata.readObject();
+               
+             // var toto:ArrayCollection=tata.readUTF();
+              //fileStream.open(myFile2, FileMode.READ);
+
+              // var toto:ArrayCollection = fileStream.readObject();
+              //Alert.show(tata.readUTFBytes(tata.length));
 	  			sqlresult.dataProvider=toto;
+	  			//tata.readUTFBytes(tata.length).
+	  			//  fileStream.close();*/
+	  			
                 
             }
           private function chooseSource():void
