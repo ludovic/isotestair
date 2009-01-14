@@ -229,7 +229,7 @@
 			<mx:TextInput id="login2"/>
 		</mx:FormItem>
 		<mx:FormItem label="Mot de passe">
-			<mx:TextInput id="mdp"/>
+			<mx:TextInput id="mdp" displayAsPassword="true"/>
 		</mx:FormItem>
 		<mx:FormItem label="Type">
 			<mx:ComboBox id="type2" dataProvider="{typeProviders}" labelField="label" change="selectChange()" width="161">
