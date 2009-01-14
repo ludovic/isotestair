@@ -48,6 +48,8 @@
 	
 <mx:Script>
 		<![CDATA[
+			import mx.collections.ArrayList;
+			import mx.controls.List;
 			import __AS3__.vec.Vector;
 		
 			import merapi.messages.Message;
@@ -63,7 +65,7 @@
     
 			private var ds : String;
 			private var source:File;
-			private var providerSql:ArrayCollection=new ArrayCollection();	
+			private var providerSql:ArrayList=new ArrayList();	
 			
 			private function connection():void{
 				
@@ -147,13 +149,20 @@
 	  			else if ((event.result as Message).type=='sqlResult'){
 					addline(bridge.lastMessage.data as Array);
 					
+					//trace(count);
+					count++;
+					if (count>9000)
+						{trace(count);
+						}
+						
+				
                //var gridResult:ArrayCollection = ArrayCollection(bridge.lastMessage.data);
 	  			//sqlresult.dataProvider=gridResult;
                     
 	  			} 
 	  			
                 else if ((event.result as Message).type=='sqlResultStop'){
-                    
+                    Alert.show('stop');
                     sqlresult.dataProvider=providerSql;
                 }
 	  			else if((event.result as Message).type=='sqlInfo'){
