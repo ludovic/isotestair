@@ -145,7 +145,7 @@
                     sqlresult.dataProvider=null;
                 }
 	  			else if ((event.result as Message).type=='sqlResult'){
-					addline(bridge.lastMessage.data as Array);
+					addline(bridge.lastMessage.data.toString());
 					
                //var gridResult:ArrayCollection = ArrayCollection(bridge.lastMessage.data);
 	  			//sqlresult.dataProvider=gridResult;
@@ -210,24 +210,25 @@
 			}
 			 
             
-            private function addline(array:Array):void{
+            private function addline(path:String):void{
             	
-            	providerSql.addItem(array);
-            	
-            	
+          //  	providerSql.addItem(array);
             	
             	
-            	/*            	Alert.show(path);
+            	
+            	
+            	//           	Alert.show(path);
             	var myFile:File = new File();
             	myFile.nativePath=path; 
             	var encoder:GZIPEncoder = new GZIPEncoder();
             	//var fileStream:FileStream = new FileStream(); 
             	       
               var tata:ByteArray=encoder.uncompressToByteArray(myFile);
+             Alert.show(tata.readObject().toString());
              
              // fileStream.readBytes(tata,0,0);  
              // var toto:ArrayCollection:
-              var toto:ArrayCollection=tata.readObject();
+            var toto:Array=tata.readObject()
                
              // var toto:ArrayCollection=tata.readUTF();
               //fileStream.open(myFile2, FileMode.READ);
