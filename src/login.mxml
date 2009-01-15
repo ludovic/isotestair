@@ -149,11 +149,7 @@
 	  			else if ((event.result as Message).type=='sqlResult'){
 					addline(bridge.lastMessage.data.toString());
 					
-					//trace(count);
-					count++;
-					if (count>9000)
-						{trace(count);
-						}
+					
 						
 				
                //var gridResult:ArrayCollection = ArrayCollection(bridge.lastMessage.data);
@@ -229,22 +225,47 @@
             	//           	Alert.show(path);
             	var myFile:File = new File();
             	myFile.nativePath=path; 
+            
             	var encoder:GZIPEncoder = new GZIPEncoder();
+            	
             	//var fileStream:FileStream = new FileStream(); 
             	       
               var tata:ByteArray=encoder.uncompressToByteArray(myFile);
-             Alert.show(tata.readObject().toString());
+             //trace(tata.toString());
              
              // fileStream.readBytes(tata,0,0);  
              // var toto:ArrayCollection:
-            var toto:Array=tata.readObject()
-               
+             
+            //var toto:XMLDocument= as XMLDocument;
+               var toto:XML= new XML(tata.toString());
+              
+
+ /* var resultArray:Array = [];
+  var mainNode = dataXML.firstChild;
+  var aNode:XMLNode = mainNode.firstChild;
+  while (aNode) {
+    var obj = new Object();
+    for (var attribute:String in aNode.attributes) {
+     
+         obj[attribute] = aNode.attributes[attribute];
+      
+    }
+    resultArray.push(obj);
+    aNode = aNode.nextSibling;
+  }
+  // -- use items (and not dataProvider)
+  
+  sqlresult.dataProvider= resultArray;
+
+
+
+
              // var toto:ArrayCollection=tata.readUTF();
               //fileStream.open(myFile2, FileMode.READ);
 
               // var toto:ArrayCollection = fileStream.readObject();
-              //Alert.show(tata.readUTFBytes(tata.length));
-	  			sqlresult.dataProvider=toto;
+              //Alert.show(tata.readUTFBytes(tata.length));*/
+	  			sqlresult.dataProvider=toto.session;
 	  			//tata.readUTFBytes(tata.length).
 	  			//  fileStream.close();*/
 	  			
