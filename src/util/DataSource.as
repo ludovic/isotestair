@@ -7,7 +7,7 @@ import flash.utils.IDataInput;
 
 	public class DataSource implements IExternalizable {
 	
-	public var login:String;
+	public var BimeDesktop:String;
 	public var mdp:String;
 	public var url:String;
 	public var type:String;
@@ -15,14 +15,14 @@ import flash.utils.IDataInput;
 		public function DataSource(){
 		}
 	 public function readExternal(input:IDataInput):void {
-       	login = input.readObject() as String;
+       	BimeDesktop = input.readObject() as String;
        	mdp = input.readObject() as String;
         url = input.readObject() as String;
         type = input.readObject() as String;
     }
     
     public function writeExternal(output:IDataOutput):void {
-        output.writeObject(login);
+        output.writeObject(BimeDesktop);
         output.writeObject(mdp);
         output.writeObject(url);
         output.writeObject(type);

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="444" height="560" xmlns:merapi="merapi.*" >
+<mx:Script>
+	<![CDATA[
+	
+    import com.probertson.utils.GZIPEncoder;
+	import mx.rpc.events.ResultEvent;
+	import merapi.messages.Message;
+	import flash.filesystem.File;
+	import mx.controls.Alert; 
+	import mx.collections.ArrayList;
+	private var ds : String;
+	private var providerSql:ArrayList=new ArrayList(); 
+	private function result(event : ResultEvent): void{
+		if ((event.result as Message).type=='sqlResultStart'){
+                    providerSql.removeAll();
+                    sqlresult.dataProvider=null;
+         }
+          else if ((event.result as Message).type=='sqlResult'){
+                    addline(bridge.lastMessage.data.toString());
+         } 
+         else if ((event.result as Message).type=='sqlResultStop'){
+                    Alert.show('stop');
+                    sqlresult.dataProvider=providerSql;
+                }
+                else if((event.result as Message).type=='sqlInfo'){
+                    responseSQL.text+= bridge.lastMessage.data.toString() + 
+                                         '\n';
+                }
+	}
+	
+	private function addline(path:String):void{
+                
+          //    providerSql.addItem(array);
+                
+                
+                
+                
+                //              Alert.show(path);
+                var myFile:File = new File();
+                myFile.nativePath=path; 
+            
+                var encoder:GZIPEncoder = new GZIPEncoder();
+                
+                //var fileStream:FileStream = new FileStream(); 
+                       
+              var tata:ByteArray=encoder.uncompressToByteArray(myFile);
+            
+               var toto:XML= new XML(tata.toString());
+              
+                sqlresult.dataProvider=toto.session;
+                
+            }
+	           private function cancelQuery():void{
+                bridge.sendMessage( new Message( 'sqlRequest_cancel', "stop" ) );
+            }
+		
+             
+            private function execute():void{
+                bridge.sendMessage( new Message( 'sqlRequest_request', ds + "##" + requette.text ) );
+            }
+	]]>
+</mx:Script>
+    <merapi:BridgeInstance id="bridge" result="result(event)" />
+    <mx:TabNavigator x="10" y="10" width="422" height="527">
+        <mx:Canvas label="Base de données" width="100%" height="100%" id="canvas3">
+   
+                <mx:TextArea width="397" height="157" x="10" y="36" id="requette"/>
+           
+                <mx:Button label="Executer" x="10" y="210" click="execute()" id="button2"/>
+            
+                <mx:DataGrid width="397" height="151" x="10" y="303" id="sqlresult">
+                    
+                </mx:DataGrid>
+           
+                <mx:TextArea x="101" y="211" width="309" height="81" id="responseSQL"/>
+            
+                <mx:Button x="12" y="270" label="Cancel" click="cancelQuery()"/>
+            
+                <mx:Button x="10" y="462" label="Retour" click="currentState='';"/>
+            
+                <mx:Label text="SQL :" x="10" y="10"/>
+            
+    
+    
+    
+ 
+    
+        </mx:Canvas>
+    </mx:TabNavigator>
+</mx:Canvas>
+
