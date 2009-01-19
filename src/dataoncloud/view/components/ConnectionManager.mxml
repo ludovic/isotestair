@@ -12,6 +12,9 @@
 		
 		public static const CONNECTION_TEST:String			=	"connectionTest";
 		public static const RETRIEVE_DATABASE:String		=	"retrieveDatabase";
+		public static const VIEW_CONNECTION_MANAGER:String      =   "viewConnectionManager";
+		public static const VIEW_QUERY_EXPLORER:String      =   "viewQueryExplorer";
+		
 		private var ds:String;
 		private var connection : Object;
 		
@@ -99,6 +102,8 @@
                     break;
                 }
                 // CHANGE STATE
+               
+                sendEvent(VIEW_QUERY_EXPLORER,connection);
             }
             
             
@@ -147,7 +152,7 @@
             </mx:ComboBox>
         </mx:FormItem>
     </mx:Form>
-    <mx:Button label="Connect" enabled="true" id="btConnect" click="connect()" x="308" y="314"/>
+    <mx:Button label="Connect" enabled="true" id="btConnect" click="this.connect()" x="308" y="314"/>
     <mx:Button label="Test"   click="this.testConnection()" x="50" y="314" id="button1"/>
     <mx:TextArea x="50" y="353" width="330" height="125" id="responseText"/>
     <mx:ViewStack x="50" y="159"  width="330" height="147" id="typeParameter">

@@ -5,6 +5,7 @@
 <mx:Script>
 		<![CDATA[
 			import dataoncloud.ApplicationFacade;
+			
 						
 			private function init():void
 			{
@@ -14,11 +15,11 @@
 			
 		]]>
 	</mx:Script>
-	<mx:ViewStack id="main" >
+	<mx:ViewStack id="vwStack" >
 		<components:ConnectionManager id="connectionManager">
 			
 		</components:ConnectionManager>
-		<components:QueryExplorer>
+		<components:QueryExplorer id="queryExplorer">
 			
 		</components:QueryExplorer>
 	</mx:ViewStack>

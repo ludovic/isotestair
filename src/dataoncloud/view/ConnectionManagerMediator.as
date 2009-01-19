@@ -3,9 +3,9 @@ package dataoncloud.view
 	import dataoncloud.ApplicationFacade;
 	import dataoncloud.view.components.ConnectionManager;
 	import dataoncloud.view.events.DocEvent;
-	
+	import mx.controls.Alert;
 	import org.puremvc.as3.interfaces.*;
-	import org.puremvc.as3.patterns.mediator.Mediator;
+	import org.puremvc.as3.patterns.mediator.Mediator; 
     
     /**
      * A Mediator for interacting with the EmployeeLogin component.
@@ -25,6 +25,7 @@ package dataoncloud.view
             super( NAME, viewComponent );
             this.connectionManager.addEventListener(ConnectionManager.CONNECTION_TEST,onConnectionTest);
             this.connectionManager.addEventListener(ConnectionManager.RETRIEVE_DATABASE,onRetrieveDatabase);
+            this.connectionManager.addEventListener(ConnectionManager.VIEW_QUERY_EXPLORER,onView);
         }
         
 
@@ -46,7 +47,7 @@ package dataoncloud.view
          */
         override public function listNotificationInterests():Array 
         {
-            return [ ApplicationFacade.CONNECTION_TEST_RESULT, ApplicationFacade.RETRIEVE_DATABASE_RESULT  ];
+            return [ ApplicationFacade.CONNECTION_TEST_RESULT, ApplicationFacade.RETRIEVE_DATABASE_RESULT, ApplicationFacade.VIEW_QUERY_EXPLORER  ];
         }
 
         /**
@@ -80,6 +81,9 @@ package dataoncloud.view
         				this.connectionManager.cmbDBSqlserver.dataProvider = message.data;
         			}
         		break;	
+        		case ApplicationFacade.VIEW_QUERY_EXPLORER:
+        		                
+                break;
         	}
         }
         
@@ -90,6 +94,10 @@ package dataoncloud.view
         private function onConnectionTest(event:DocEvent):void
         {
         	sendNotification(ApplicationFacade.CONNECTION_TEST,event.body);
+        }
+        private function onView(event:DocEvent):void
+        {
+            sendNotification(ApplicationFacade.VIEW_QUERY_EXPLORER,event.body);
         }
     }
 }

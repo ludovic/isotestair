@@ -16,6 +16,8 @@ package dataoncloud
 		public static const CONNECTION_TEST_RESULT:String		=	"connectionTestResult";
 		public static const RETRIEVE_DATABASE:String			=	"retrieveDatabse";
 		public static const RETRIEVE_DATABASE_RESULT:String		=	"retrieveDatabaseResult";
+		public static const VIEW_CONNECTION_MANAGER:String      =   "viewConnectionManager";
+        public static const VIEW_QUERY_EXPLORER:String     =   "viewQueryExplorer"; 
 		
         /**
          * Singleton ApplicationFacade Factory Method
