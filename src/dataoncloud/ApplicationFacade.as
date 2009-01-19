@@ -1,6 +1,7 @@
 package dataoncloud
 {
 	import dataoncloud.controller.ConnectionTestCommand;
+	import dataoncloud.controller.ExecuteQueryCommand;
 	import dataoncloud.controller.RetrieveDatabseCommand;
 	import dataoncloud.controller.startup.ApplicationStartupCommand;
 	
@@ -17,7 +18,11 @@ package dataoncloud
 		public static const RETRIEVE_DATABASE:String			=	"retrieveDatabse";
 		public static const RETRIEVE_DATABASE_RESULT:String		=	"retrieveDatabaseResult";
 		public static const VIEW_CONNECTION_MANAGER:String      =   "viewConnectionManager";
-        public static const VIEW_QUERY_EXPLORER:String     =   "viewQueryExplorer"; 
+        public static const VIEW_QUERY_EXPLORER:String     		=   "viewQueryExplorer";
+        public static const EXECUTE_QUERY:String				=	"executeQuery";
+        public static const CANCEL_QUERY:String					=	"cancelQuery";
+        public static const INFO_SQL_QUERY:String				=	"infoSQLQuery";
+        public static const SQL_RESULT_XML:String				=	"SQLResultXML";
 		
         /**
          * Singleton ApplicationFacade Factory Method
@@ -37,6 +42,7 @@ package dataoncloud
             registerCommand( STARTUP, ApplicationStartupCommand );
             registerCommand( CONNECTION_TEST, dataoncloud.controller.ConnectionTestCommand );
             registerCommand( RETRIEVE_DATABASE, dataoncloud.controller.RetrieveDatabseCommand);
+            registerCommand( EXECUTE_QUERY, dataoncloud.controller.ExecuteQueryCommand);
         }
         
         public function startup( app:BimeDesktop ):void

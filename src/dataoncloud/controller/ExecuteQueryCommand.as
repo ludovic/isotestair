@@ -1,6 +1,7 @@
 package	 dataoncloud.controller
 {
     import dataoncloud.model.SqlProxy;
+    import dataoncloud.model.vo.MySQLQuery;
     
     import org.puremvc.as3.interfaces.*;
     import org.puremvc.as3.patterns.command.*;
@@ -9,15 +10,15 @@ package	 dataoncloud.controller
     /**
      * Create and register <code>Proxy</code>s with the <code>Model</code>.
      */
-    public class ConnectionTestCommand extends SimpleCommand
+    public class ExecuteQueryCommand extends SimpleCommand
     {
         override public function execute( note:INotification ) :void    
         {
-        	var connection:Object = note.getBody()
+			var mySQLQuery:MySQLQuery = note.getBody() as MySQLQuery;
 
         	       
-           var sqlProxy:SqlProxy = facade.retrieveProxy(SqlProxy.NAME) as SqlProxy;
-           sqlProxy.testConnection(connection);
+			var sqlProxy:SqlProxy = facade.retrieveProxy(SqlProxy.NAME) as SqlProxy;
+			sqlProxy.executeQuery(mySQLQuery);
         }
     }
 

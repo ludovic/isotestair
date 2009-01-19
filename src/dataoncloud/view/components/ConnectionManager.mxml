@@ -31,7 +31,7 @@
 												host:txtHostOracle.text,
 												port:txtPortOracle.text,
 												sid:txtSidOracle.text,
-												databse:null};
+												database:null};
 				break;
 				case "MySQL":
 					connection = {login:txtLogin.text,
@@ -40,7 +40,7 @@
 												host:txtHostMySql.text,
 												port:txtPortMySql.text,
 												sid:null,
-												databse:null};
+												database:null};
 				break;
 			    case "SQL Server": 
 					connection = {login:txtLogin.text,
@@ -49,7 +49,7 @@
 												host:txtHostSQLServer.text,
 												port:txtPortSQLServer.text,
 												sid:null,
-												databse:null};
+												database:null};
 				break;
 			    case "PostgreSQL": 
 					connection = {login:txtLogin.text,
@@ -58,7 +58,7 @@
 												host:txtHostPostgre.text,
 												port:txtPortPostgre.text,
 												sid:null,
-												databse:null};
+												database:null};
 				break;
 				
 			}

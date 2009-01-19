@@ -9,15 +9,11 @@ package	 dataoncloud.controller
     /**
      * Create and register <code>Proxy</code>s with the <code>Model</code>.
      */
-    public class ConnectionTestCommand extends SimpleCommand
+    public class ExecuteQuery extends SimpleCommand
     {
         override public function execute( note:INotification ) :void    
         {
-        	var connection:Object = note.getBody()
-
-        	       
-           var sqlProxy:SqlProxy = facade.retrieveProxy(SqlProxy.NAME) as SqlProxy;
-           sqlProxy.testConnection(connection);
+        	
         }
     }
 

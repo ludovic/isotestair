@@ -1,26 +1,35 @@
 package dataoncloud.view
 {
-	import mx.controls.Alert;
-    import flash.events.Event;
-    import org.puremvc.as3.interfaces.*;
-    import org.puremvc.as3.patterns.mediator.Mediator;
+	import dataoncloud.ApplicationFacade;
+	import dataoncloud.model.vo.MySQLQuery;
+	import dataoncloud.view.components.QueryExplorer;
+	import dataoncloud.view.events.DocEvent;
+	
+	import flash.events.Event;
+	import flash.utils.ByteArray;
+	
+	import org.puremvc.as3.interfaces.*;
+	import org.puremvc.as3.patterns.mediator.Mediator;
     
     /**
      * A Mediator for interacting with the EmployeeLogin component.
      */
-    public class SqlQueryMediator extends Mediator implements IMediator
+    public class QueryExplorerMediator extends Mediator implements IMediator
     {
         // Cannonical name of the Mediator
-        public static const NAME:String = "SqlQueryMediator";
+        public static const NAME:String = "QueryExplorerMediator";
         
         /**
          * Constructor. 
          */
-        public function SqlQueryMediator( viewComponent:Object ) 
+        public function QueryExplorerMediator( viewComponent:Object ) 
         {
             // pass the viewComponent to the superclass where 
             // it will be stored in the inherited viewComponent property
             super( NAME, viewComponent );
+            this.queryExplorer.addEventListener(QueryExplorer.EXECUTE_QUERY,onExecute);
+            this.queryExplorer.addEventListener(QueryExplorer.CANCEL_QUERY,onCancel);
+            this.queryExplorer.addEventListener(QueryExplorer.VIEW_CONNECTION_MANAGER,onView);
             
         }
 
@@ -34,7 +43,10 @@ package dataoncloud.view
          */
         override public function listNotificationInterests():Array 
         {
-            return [ ApplicationFacade.APP_LOGOUT ];
+            return [ ApplicationFacade.VIEW_QUERY_EXPLORER,
+            		ApplicationFacade.INFO_SQL_QUERY,
+            		ApplicationFacade.SQL_RESULT_XML,
+            		ApplicationFacade.VIEW_CONNECTION_MANAGER ];
         }
 
         /**
@@ -50,49 +62,40 @@ package dataoncloud.view
         {
             switch ( note.getName() ) 
             {
-                case ApplicationFacade.APP_LOGOUT:
-                    employeeLogin.resetLogin();
+                case ApplicationFacade.VIEW_QUERY_EXPLORER:
+                    this.queryExplorer.connection=note.getBody();
+                    break;
+				case ApplicationFacade.INFO_SQL_QUERY:
+                    this.queryExplorer.responseSQL.text=note.getBody().data;
+                    break;
+                case ApplicationFacade.SQL_RESULT_XML:
+                var myXML:XML= new XML((note.getBody() as ByteArray).toString());
+                    this.queryExplorer.sqlresult.dataProvider=myXML.session;
+                    break;
+                    case ApplicationFacade.VIEW_CONNECTION_MANAGER:
+                    this.queryExplorer.clearText();
                     break;
             }
         }
-                    
-        /**
-         * Cast the viewComponent to its actual type.
-         * 
-         * <P>
-         * This is a useful idiom for mediators. The
-         * PureMVC Mediator class defines a viewComponent
-         * property of type Object. </P>
-         * 
-         * <P>
-         * Here, we cast the generic viewComponent to 
-         * its actual type in a protected mode. This 
-         * retains encapsulation, while allowing the instance
-         * (and subclassed instance) access to a 
-         * strongly typed reference with a meaningful
-         * name.</P>
-         * 
-         * @return EmployeeLogin the viewComponent cast to EmployeeLogin
-         */
-        protected function get employeeLogin():EmployeeLogin
+        
+        private function get queryExplorer():QueryExplorer
         {
-            return viewComponent as EmployeeLogin;
+        	return viewComponent as QueryExplorer;
         }
         
-        private function login( event:Event = null ) : void
+        private function onExecute(event:DocEvent):void
         {
-            var isValid:Boolean = userProxy.validate(employeeLogin.username.text,employeeLogin.password.text);
-            if( isValid )
-            {
-                sendNotification( ApplicationFacade.VIEW_EMPLOYEE_LIST );
-            }
-            else
-            {
-                // if the auth info was incorrect, prompt with an alert box and remain on the login screen
-                Alert.show( "Invaild username and/or password. Please try again.","Login Failed" );
-            }
+        	var mySQLQuery:MySQLQuery = new MySQLQuery(this.queryExplorer.connection,this.queryExplorer.requette.text);        	
+        	sendNotification(ApplicationFacade.EXECUTE_QUERY,mySQLQuery);
         }
-        private var userProxy:UserProxy;
         
+        private function onCancel(event:Event):void
+        {        	
+        	sendNotification(ApplicationFacade.CANCEL_QUERY,null);
+        }
+         private function onView(event:DocEvent):void
+        {
+            sendNotification(ApplicationFacade.VIEW_CONNECTION_MANAGER,event.body);
+        }
     }
 }

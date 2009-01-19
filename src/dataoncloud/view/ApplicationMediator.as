@@ -2,7 +2,6 @@ package dataoncloud.view
 {
 	
 	import dataoncloud.*;
-	import dataoncloud.ApplicationFacade;
 	import dataoncloud.model.*;
 	import dataoncloud.view.components.*;
 	
@@ -27,6 +26,7 @@ package dataoncloud.view
             super( NAME, viewComponent );
             
             facade.registerMediator( new ConnectionManagerMediator( app.connectionManager ));
+            facade.registerMediator( new QueryExplorerMediator(app.queryExplorer));
         }
         
         
