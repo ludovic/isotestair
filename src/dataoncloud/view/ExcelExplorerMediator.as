@@ -1,7 +1,10 @@
 package dataoncloud.view
 {
 	import dataoncloud.ApplicationFacade;
+	import dataoncloud.model.vo.MyExcelSheet;
 	import dataoncloud.view.components.ExcelExplorer;
+	
+	import flash.events.Event;
 	
 	import org.puremvc.as3.interfaces.*;
 	import org.puremvc.as3.patterns.mediator.Mediator;
@@ -24,13 +27,15 @@ package dataoncloud.view
             // pass the viewComponent to the superclass where 
             // it will be stored in the inherited viewComponent property
             super( NAME, viewComponent );
+            this.excelExplorer.addEventListener(ExcelExplorer.LOAD_SHEET,onLoadSheet);
             
         }
 
         override public function listNotificationInterests():Array 
         {
             return [ ApplicationFacade.VIEW_EXCEL_EXPLORER,
-            		 ApplicationFacade.NAME_SHEETS_EXCEL];
+            		 ApplicationFacade.NAME_SHEETS_EXCEL,
+            		 ApplicationFacade.EXCEL_DATA];
         }
 
 
@@ -45,13 +50,22 @@ package dataoncloud.view
                 break;
                 case ApplicationFacade.NAME_SHEETS_EXCEL:
                     this.excelExplorer.sheetNames.dataProvider=note.getBody() as Array;
-                break;		
+                break;
+                case ApplicationFacade.EXCEL_DATA:
+                    this.excelExplorer.excelResult.dataProvider=note.getBody() as Array;
+                break;	
             }
         }
         
         private function get excelExplorer():ExcelExplorer
         {
         	return viewComponent as ExcelExplorer;
-        }    
+        }
+        
+        private function onLoadSheet(event:Event):void
+        {       
+        	var myExcelSheet:MyExcelSheet = new MyExcelSheet(this.path,this.excelExplorer.sheetNames.selectedItem as String);
+        	sendNotification(ApplicationFacade.LOAD_EXCEL_SHEET,myExcelSheet);
+        }
     }
 }

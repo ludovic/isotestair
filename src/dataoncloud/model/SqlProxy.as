@@ -3,6 +3,7 @@ package dataoncloud.model
 	import com.probertson.utils.GZIPEncoder;
 	
 	import dataoncloud.ApplicationFacade;
+	import dataoncloud.model.vo.MyExcelSheet;
 	import dataoncloud.model.vo.MySQLQuery;
 	
 	import flash.filesystem.File;
@@ -109,7 +110,11 @@ package dataoncloud.model
     	public function getNameExcelSheets(path:String):void
     	{
     		Bridge.instance.sendMessage( new Message( 'getNameSheets',path) );
-    	}    	
+    	}
+    	public function loadExcelSheet(myExcelSheet:MyExcelSheet):void
+    	{
+    		Bridge.instance.sendMessage( new Message( 'getExcelData',myExcelSheet.path+'##'+myExcelSheet.sheetName));
+    	}   	
     	
     	// Result methods
     	private function onResultHandler(event : ResultEvent): void
@@ -136,6 +141,12 @@ package dataoncloud.model
     			break;
     			case 'nameSheetsExcel':
     				this.namesSheeExcelHandler(event);
+    			break;
+    			case 'excelResult':
+    				this.excelResultHandler(event);
+    			break;
+    			case 'excelStop':
+    				this.excelResultHandler(event);
     			break;
     			
     		}
@@ -174,7 +185,24 @@ package dataoncloud.model
      		//event.result.getData -> String[]
      		sendNotification(ApplicationFacade.NAME_SHEETS_EXCEL,event.result.data);
      	}
-     	
+     	var result:Array=null;
+     	private function excelResultHandler(event:ResultEvent):void
+     	{
+     		
+     		if(event.result.type=='excelResult')
+     		{
+     			if (result==null)
+     				result = event.result.data as Array;
+     			else
+     				result = result.concat(event.result.data as Array);
+     		}
+     		else if(event.result.type=='excelStop')
+     		{
+     			sendNotification(ApplicationFacade.EXCEL_DATA,result);
+     			result=null;
+     		}
+     		
+     	}     	
      	
      	// Fault methods
      	private function onFaultHandler (event:FaultEvent):void

@@ -9,9 +9,8 @@
 	import mx.controls.Alert;  
 	import mx.collections.ArrayList;
 	
-	public static const EXECUTE_QUERY:String='ExecuteQuery';
-	public static const CANCEL_QUERY:String='CancelQuery'; 
-	public static const VIEW_CONNECTION_MANAGER:String="viewConnectionManager";	
+	public static const LOAD_SHEET:String='LoadSheet';
+
 	
 
 
@@ -20,17 +19,15 @@
     <mx:TabNavigator x="10" y="10" width="422" height="527">
         <mx:Canvas label="Fichier Excel" width="100%" height="100%" id="canvas3">
    
-                <mx:Button label="Executer" x="10" y="99" click="dispatchEvent(new Event(EXECUTE_QUERY,true));" id="button2"/>
+                <mx:Button label="Load" x="10" y="99" click="dispatchEvent(new Event(LOAD_SHEET,true));" id="button2"/>
             
-                <mx:DataGrid width="397" height="265" x="10" y="189" id="sqlresult">
+                <mx:DataGrid width="397" height="325" x="10" y="129" id="excelResult">
                     
                 </mx:DataGrid>
-           
-                <mx:TextArea x="101" y="100" width="309" height="81" id="responseSQL"/>
             
-                <mx:Button x="12" y="159" label="Cancel" click="dispatchEvent(new Event(CANCEL_QUERY,true));"/>
+                <mx:Button x="105" y="99" label="Cancel" click=""/>
             
-                <mx:Button x="10" y="462" label="Retour" click="dispatchEvent(new Event(VIEW_CONNECTION_MANAGER,true));"/>
+                <mx:Button x="10" y="462" label="Retour" click=""/>
                 <mx:ComboBox x="10" y="58" width="114" id="sheetNames"></mx:ComboBox>
                 <mx:Label x="10" y="32" text="Feuille numéro :"/>
             

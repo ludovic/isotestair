@@ -5,6 +5,7 @@ package dataoncloud
 	import dataoncloud.controller.ExecuteQueryCommand;
 	import dataoncloud.controller.GetExcelSheetNames;
 	import dataoncloud.controller.RetrieveDatabseCommand;
+	import dataoncloud.controller.LoadExcelSheet;
 	import dataoncloud.controller.startup.ApplicationStartupCommand;
 	
 	import org.puremvc.as3.interfaces.*;
@@ -28,6 +29,8 @@ package dataoncloud
         public static const SQL_RESULT_XML:String				=	"SQLResultXML";
         public static const NAME_SHEETS_EXCEL:String			=	"nameSheetsExcel";
         public static const GET_NAME_SHEETS_EXCEL:String		=	"getNameSheetsExcel";
+        public static const LOAD_EXCEL_SHEET:String				=	"loadExcelSheet";
+        public static const EXCEL_DATA:String					=	"excelData";
         
 		
         /**
@@ -51,6 +54,7 @@ package dataoncloud
             registerCommand( EXECUTE_QUERY, dataoncloud.controller.ExecuteQueryCommand);
             registerCommand( CANCEL_QUERY, dataoncloud.controller.CancelQueryCommand);
             registerCommand( GET_NAME_SHEETS_EXCEL, dataoncloud.controller.GetExcelSheetNames);
+            registerCommand( LOAD_EXCEL_SHEET, dataoncloud.controller.LoadExcelSheet);
         }
         
         public function startup( app:BimeDesktop ):void
