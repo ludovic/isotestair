@@ -47,7 +47,9 @@ package dataoncloud.view
          */
         override public function listNotificationInterests():Array 
         {
-            return [ ApplicationFacade.CONNECTION_TEST_RESULT, ApplicationFacade.RETRIEVE_DATABASE_RESULT, ApplicationFacade.VIEW_QUERY_EXPLORER  ];
+            return [ ApplicationFacade.CONNECTION_TEST_RESULT,
+            ApplicationFacade.RETRIEVE_DATABASE_RESULT,
+            ApplicationFacade.VIEW_QUERY_EXPLORER  ];
         }
 
         /**
@@ -64,7 +66,7 @@ package dataoncloud.view
         	switch(note.getName())
         	{
         		case ApplicationFacade.CONNECTION_TEST_RESULT:
-					this.connectionManager.responseText.text += note.getBody() as String;        			
+					this.connectionManager.responseText.text +=(note.getBody() as String)+'\n';        			
         		break;
         		case ApplicationFacade.RETRIEVE_DATABASE_RESULT:
         			var message:Object = note.getBody();

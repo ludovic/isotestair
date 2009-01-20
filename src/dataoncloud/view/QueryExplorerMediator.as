@@ -64,17 +64,14 @@ package dataoncloud.view
             {
                 case ApplicationFacade.VIEW_QUERY_EXPLORER:
                     this.queryExplorer.connection=note.getBody();
-                    break;
+                break;
 				case ApplicationFacade.INFO_SQL_QUERY:
-                    this.queryExplorer.responseSQL.text=note.getBody().data;
-                    break;
+                    this.queryExplorer.responseSQL.text+=note.getBody().data+'\n';
+                break;
                 case ApplicationFacade.SQL_RESULT_XML:
                 var myXML:XML= new XML((note.getBody() as ByteArray).toString());
                     this.queryExplorer.sqlresult.dataProvider=myXML.session;
-                    break;
-                    case ApplicationFacade.VIEW_CONNECTION_MANAGER:
-                    this.queryExplorer.clearText();
-                    break;
+                break;
             }
         }
         
@@ -83,7 +80,7 @@ package dataoncloud.view
         	return viewComponent as QueryExplorer;
         }
         
-        private function onExecute(event:DocEvent):void
+        private function onExecute(event:Event):void
         {
         	var mySQLQuery:MySQLQuery = new MySQLQuery(this.queryExplorer.connection,this.queryExplorer.requette.text);        	
         	sendNotification(ApplicationFacade.EXECUTE_QUERY,mySQLQuery);
@@ -93,9 +90,10 @@ package dataoncloud.view
         {        	
         	sendNotification(ApplicationFacade.CANCEL_QUERY,null);
         }
-         private function onView(event:DocEvent):void
+        private function onView(event:Event):void
         {
-            sendNotification(ApplicationFacade.VIEW_CONNECTION_MANAGER,event.body);
+            this.queryExplorer.clearText();
+            sendNotification(ApplicationFacade.VIEW_CONNECTION_MANAGER,null);
         }
     }
 }

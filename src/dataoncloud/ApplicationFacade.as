@@ -1,5 +1,6 @@
 package dataoncloud
 {
+	import dataoncloud.controller.CancelQueryCommand;
 	import dataoncloud.controller.ConnectionTestCommand;
 	import dataoncloud.controller.ExecuteQueryCommand;
 	import dataoncloud.controller.RetrieveDatabseCommand;
@@ -43,6 +44,7 @@ package dataoncloud
             registerCommand( CONNECTION_TEST, dataoncloud.controller.ConnectionTestCommand );
             registerCommand( RETRIEVE_DATABASE, dataoncloud.controller.RetrieveDatabseCommand);
             registerCommand( EXECUTE_QUERY, dataoncloud.controller.ExecuteQueryCommand);
+            registerCommand( CANCEL_QUERY, dataoncloud.controller.CancelQueryCommand);
         }
         
         public function startup( app:BimeDesktop ):void

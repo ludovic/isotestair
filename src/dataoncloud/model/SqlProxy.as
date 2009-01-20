@@ -12,6 +12,7 @@ package dataoncloud.model
 	import merapi.events.MerapiErrorEvent;
 	import merapi.messages.Message;
 	
+	import mx.controls.Alert;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
 	
@@ -136,21 +137,13 @@ package dataoncloud.model
     	
     	private function testConnectionResultHandler(event : ResultEvent): void
     	{
-                if ((event.result as Message).type=='testBase')
-                {
-                	var message:Object = event.result.data;
-                    sendNotification(ApplicationFacade.CONNECTION_TEST_RESULT,message);
-                }
+			var message:Object = event.result.data;
+			sendNotification(ApplicationFacade.CONNECTION_TEST_RESULT,message);
      	}
      	private function retrieveDatabaseResultHandler(event:ResultEvent):void
      	{
      		var message:Object = event.result;
      		sendNotification(ApplicationFacade.RETRIEVE_DATABASE_RESULT,message);
-     	}
-     	private function executeQueryResultHandler(event:ResultEvent):void
-     	{
-     		//var message:Object = event.result;
-     		//sendNotification(ApplicationFacade.RETRIEVE_DATABASE_RESULT,message);
      	}
      	private function infoResultHandler(event:ResultEvent):void
      	{
