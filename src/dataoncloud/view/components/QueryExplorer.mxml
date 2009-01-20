@@ -17,27 +17,8 @@
 	
 	public static const EXECUTE_QUERY:String='ExecuteQuery';
 	public static const CANCEL_QUERY:String='CancelQuery'; 
-<<<<<<< HEAD:src/dataoncloud/view/components/QueryExplorer.mxml
-	public static const VIEW_CONNECTION_MANAGER:String="viewConnectionManager";
-	
-	private function result(event : ResultEvent): void{
-		if ((event.result as Message).type=='sqlResultStart'){
-                    providerSql.removeAll();
-                    sqlresult.dataProvider=null;
-         
-         } 
-         else if ((event.result as Message).type=='sqlResultStop'){
-                    Alert.show('stop2');
-                    sqlresult.dataProvider=providerSql;
-                }
-                else if((event.result as Message).type=='sqlInfo'){
-                    responseSQL.text+= bridge.lastMessage.data.toString() + 
-                                         '\n';
-                }
-	}
-=======
+
 	public static const VIEW_CONNECTION_MANAGER:String="viewConnectionManager";	
->>>>>>> IsoTestAir/PureMVC:src/dataoncloud/view/components/QueryExplorer.mxml
 	
 
             public function clearText():void

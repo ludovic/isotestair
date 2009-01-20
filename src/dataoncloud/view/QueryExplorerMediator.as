@@ -102,7 +102,7 @@ package dataoncloud.view
         {
         	var mySQLQuery:MySQLQuery = new MySQLQuery(this.queryExplorer.connection,this.queryExplorer.requette.text);        	
         	sendNotification(ApplicationFacade.EXECUTE_QUERY,mySQLQuery);
-        }
+        } 
         
         private function onCancel(event:Event):void
         {        	
