@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="444" height="560" xmlns:merapi="merapi.*" >
+<mx:Script>
+	<![CDATA[	
+    import com.probertson.utils.GZIPEncoder;
+	import mx.rpc.events.ResultEvent;
+	import merapi.messages.Message;
+	import flash.filesystem.File;
+	import mx.controls.Alert;  
+	import mx.collections.ArrayList;
+	
+	public static const LOAD_SHEET:String='LoadSheet';
+	public static const BACK:String='back';
+
+	
+	public function clear():void
+	{
+		this.excelResult.dataProvider={};
+	}
+
+	]]>
+</mx:Script>
+    <mx:TabNavigator x="10" y="10" width="422" height="527">
+        <mx:Canvas label="Fichier Excel" width="100%" height="100%" id="canvas3">
+   
+                <mx:Button label="Load" x="10" y="66" click="dispatchEvent(new Event(LOAD_SHEET,true));" id="button2"/>
+            
+                <mx:DataGrid width="397" height="358" x="10" y="96" id="excelResult">
+                    
+                </mx:DataGrid>
+            
+                <mx:Button x="10" y="462" label="Retour" click="dispatchEvent(new Event(BACK,true));"/>
+                <mx:ComboBox x="10" y="36" width="124" id="sheetNames"></mx:ComboBox>
+                <mx:Label x="10" y="10" text="Feuille numéro :"/>
+            
+    
+    
+    
+ 
+    
+        </mx:Canvas>
+    </mx:TabNavigator>
+</mx:Canvas>
+

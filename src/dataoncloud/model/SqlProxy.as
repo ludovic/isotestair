@@ -1,6 +1,7 @@
 package dataoncloud.model
 {
 	import dataoncloud.ApplicationFacade;
+	import dataoncloud.model.vo.MyExcelSheet;
 	import dataoncloud.model.vo.MySQLQuery;
 	
 	import merapi.*;
@@ -101,6 +102,14 @@ package dataoncloud.model
     		Bridge.instance.sendMessage( new Message( 'sqlRequest_cancel',null) );
     	}
     	
+    	public function getNameExcelSheets(path:String):void
+    	{
+    		Bridge.instance.sendMessage( new Message( 'getNameSheets',path) );
+    	}
+    	public function loadExcelSheet(myExcelSheet:MyExcelSheet):void
+    	{
+    		Bridge.instance.sendMessage( new Message( 'getExcelData',myExcelSheet.path+'##'+myExcelSheet.sheetName));
+    	}   	
     	
     	// Result methods
     	private function onResultHandler(event : ResultEvent): void
@@ -125,27 +134,28 @@ package dataoncloud.model
     			case 'sqlResult':
     				this.sqlResultHandler(event);
     			break;
+    			case 'nameSheetsExcel':
+    				this.namesSheeExcelHandler(event);
+    			break;
+    			case 'excelResult':
+    				this.excelResultHandler(event);
+    			break;
+    			case 'excelStop':
+    				this.excelResultHandler(event);
+    			break;
     			
     		}
     	}
     	
     	private function testConnectionResultHandler(event : ResultEvent): void
     	{
-                if ((event.result as Message).type=='testBase')
-                {
-                	var message:Object = event.result.data;
-                    sendNotification(ApplicationFacade.CONNECTION_TEST_RESULT,message);
-                }
+			var message:Object = event.result.data;
+			sendNotification(ApplicationFacade.CONNECTION_TEST_RESULT,message);
      	}
      	private function retrieveDatabaseResultHandler(event:ResultEvent):void
      	{
      		var message:Object = event.result;
      		sendNotification(ApplicationFacade.RETRIEVE_DATABASE_RESULT,message);
-     	}
-     	private function executeQueryResultHandler(event:ResultEvent):void
-     	{
-     		//var message:Object = event.result;
-     		//sendNotification(ApplicationFacade.RETRIEVE_DATABASE_RESULT,message);
      	}
      	private function infoResultHandler(event:ResultEvent):void
      	{
@@ -169,7 +179,29 @@ package dataoncloud.model
             
             sendNotification(ApplicationFacade.SQL_RESULT_XML,partResult);            
      	}
-     	
+     	private function namesSheeExcelHandler(event:ResultEvent):void
+     	{
+     		//event.result.getData -> String[]
+     		sendNotification(ApplicationFacade.NAME_SHEETS_EXCEL,event.result.data);
+     	}
+     	var result:Array=null;
+     	private function excelResultHandler(event:ResultEvent):void
+     	{
+     		
+     		if(event.result.type=='excelResult')
+     		{
+     			if (result==null)
+     				result = event.result.data as Array;
+     			else
+     				result = result.concat(event.result.data as Array);
+     		}
+     		else if(event.result.type=='excelStop')
+     		{
+     			sendNotification(ApplicationFacade.EXCEL_DATA,result);
+     			result=null;
+     		}
+     		
+     	}     	
      	
      	// Fault methods
      	private function onFaultHandler (event:FaultEvent):void
