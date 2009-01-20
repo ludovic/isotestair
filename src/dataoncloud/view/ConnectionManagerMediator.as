@@ -3,7 +3,11 @@ package dataoncloud.view
 	import dataoncloud.ApplicationFacade;
 	import dataoncloud.view.components.ConnectionManager;
 	import dataoncloud.view.events.DocEvent;
+	
+	import flash.events.Event;
+	
 	import mx.controls.Alert;
+	
 	import org.puremvc.as3.interfaces.*;
 	import org.puremvc.as3.patterns.mediator.Mediator; 
     
@@ -26,6 +30,7 @@ package dataoncloud.view
             this.connectionManager.addEventListener(ConnectionManager.CONNECTION_TEST,onConnectionTest);
             this.connectionManager.addEventListener(ConnectionManager.RETRIEVE_DATABASE,onRetrieveDatabase);
             this.connectionManager.addEventListener(ConnectionManager.VIEW_QUERY_EXPLORER,onView);
+            this.connectionManager.addEventListener(ConnectionManager.LOAD_FILE,onLoadFile);
         }
         
 
@@ -100,6 +105,15 @@ package dataoncloud.view
         private function onView(event:DocEvent):void
         {
             sendNotification(ApplicationFacade.VIEW_QUERY_EXPLORER,event.body);
+        }
+        private function onLoadFile(event:Event):void
+        {
+        	switch(this.connectionManager.source.extension)
+        	{
+	        	case 'xls':
+	        		sendNotification(ApplicationFacade.VIEW_EXCEL_EXPLORER,this.connectionManager.sourceTxt.text);
+	        	break;
+	        }
         }
     }
 }

@@ -15,10 +15,11 @@
 		public static const RETRIEVE_DATABASE:String		=	"retrieveDatabase";
 		public static const VIEW_CONNECTION_MANAGER:String      =   "viewConnectionManager";
 		public static const VIEW_QUERY_EXPLORER:String      =   "viewQueryExplorer";
+		public static const LOAD_FILE:String      =   "loadFile";
 		
 	
 		private var connection : Object;
-		private var source:File;
+		public var source:File;
 		
 		
 		private function setConnection():void
@@ -226,7 +227,7 @@
 			<mx:Label y="33" text="Source file:" left="32" width="68"/>
 			<mx:TextInput y="31" right="163" left="108" id="sourceTxt" editable="false"/>
 			<mx:Button y="31" label="Choose" right="84" click="chooseSource();"/>
-			<mx:Button x="35" y="92" label="Load"/>
+			<mx:Button x="35" y="92" label="Load" id="loadFile" click="dispatchEvent(new Event(LOAD_FILE,true));"/>
 		</mx:Canvas>
     </mx:TabNavigator>
 </mx:Canvas>

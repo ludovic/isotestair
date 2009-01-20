@@ -3,6 +3,7 @@ package dataoncloud
 	import dataoncloud.controller.CancelQueryCommand;
 	import dataoncloud.controller.ConnectionTestCommand;
 	import dataoncloud.controller.ExecuteQueryCommand;
+	import dataoncloud.controller.GetExcelSheetNames;
 	import dataoncloud.controller.RetrieveDatabseCommand;
 	import dataoncloud.controller.startup.ApplicationStartupCommand;
 	
@@ -20,10 +21,14 @@ package dataoncloud
 		public static const RETRIEVE_DATABASE_RESULT:String		=	"retrieveDatabaseResult";
 		public static const VIEW_CONNECTION_MANAGER:String      =   "viewConnectionManager";
         public static const VIEW_QUERY_EXPLORER:String     		=   "viewQueryExplorer";
+        public static const VIEW_EXCEL_EXPLORER:String			=	"viewExcelExplorer";
         public static const EXECUTE_QUERY:String				=	"executeQuery";
         public static const CANCEL_QUERY:String					=	"cancelQuery";
         public static const INFO_SQL_QUERY:String				=	"infoSQLQuery";
         public static const SQL_RESULT_XML:String				=	"SQLResultXML";
+        public static const NAME_SHEETS_EXCEL:String			=	"nameSheetsExcel";
+        public static const GET_NAME_SHEETS_EXCEL:String		=	"getNameSheetsExcel";
+        
 		
         /**
          * Singleton ApplicationFacade Factory Method
@@ -45,6 +50,7 @@ package dataoncloud
             registerCommand( RETRIEVE_DATABASE, dataoncloud.controller.RetrieveDatabseCommand);
             registerCommand( EXECUTE_QUERY, dataoncloud.controller.ExecuteQueryCommand);
             registerCommand( CANCEL_QUERY, dataoncloud.controller.CancelQueryCommand);
+            registerCommand( GET_NAME_SHEETS_EXCEL, dataoncloud.controller.GetExcelSheetNames);
         }
         
         public function startup( app:BimeDesktop ):void

@@ -15,6 +15,7 @@ package dataoncloud.view
         
         public static const CONNECTION_MANAGER : Number =   0;
         public static const QUERY_EXPLORER: Number =    1;
+        public static const EXCEL_EXPLORER: Number =    2;
         
         /**
          * Constructor. 
@@ -27,6 +28,7 @@ package dataoncloud.view
             
             facade.registerMediator( new ConnectionManagerMediator( app.connectionManager ));
             facade.registerMediator( new QueryExplorerMediator(app.queryExplorer));
+            facade.registerMediator( new ExcelExplorerMediator(app.excelExplorer));
         }
         
         
@@ -34,7 +36,8 @@ package dataoncloud.view
         {
             
             return [ ApplicationFacade.VIEW_CONNECTION_MANAGER,
-                     ApplicationFacade.VIEW_QUERY_EXPLORER
+                     ApplicationFacade.VIEW_QUERY_EXPLORER,
+                     ApplicationFacade.VIEW_EXCEL_EXPLORER
                     ];
         }
         
@@ -44,11 +47,14 @@ package dataoncloud.view
             { 
                 
                 case ApplicationFacade.VIEW_CONNECTION_MANAGER:
-                app.vwStack.selectedIndex = CONNECTION_MANAGER;
-                    break;
+                	app.vwStack.selectedIndex = CONNECTION_MANAGER;
+				break;
                 case ApplicationFacade.VIEW_QUERY_EXPLORER:
-                app.vwStack.selectedIndex = QUERY_EXPLORER;
-                    break;
+                	app.vwStack.selectedIndex = QUERY_EXPLORER;
+				break;
+				case ApplicationFacade.VIEW_EXCEL_EXPLORER:
+                	app.vwStack.selectedIndex = EXCEL_EXPLORER;
+				break;
             }
         }
         

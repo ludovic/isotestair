@@ -12,7 +12,6 @@ package dataoncloud.model
 	import merapi.events.MerapiErrorEvent;
 	import merapi.messages.Message;
 	
-	import mx.controls.Alert;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
 	
@@ -107,6 +106,10 @@ package dataoncloud.model
     		Bridge.instance.sendMessage( new Message( 'sqlRequest_cancel',null) );
     	}
     	
+    	public function getNameExcelSheets(path:String):void
+    	{
+    		Bridge.instance.sendMessage( new Message( 'getNameSheets',path) );
+    	}    	
     	
     	// Result methods
     	private function onResultHandler(event : ResultEvent): void
@@ -130,6 +133,9 @@ package dataoncloud.model
     			break;
     			case 'sqlResult':
     				this.sqlResultHandler(event);
+    			break;
+    			case 'nameSheetsExcel':
+    				this.namesSheeExcelHandler(event);
     			break;
     			
     		}
@@ -162,6 +168,11 @@ package dataoncloud.model
             //var myXML:XML= new XML(tabByte.toString());
             
             sendNotification(ApplicationFacade.SQL_RESULT_XML,tabByte);            
+     	}
+     	private function namesSheeExcelHandler(event:ResultEvent):void
+     	{
+     		//event.result.getData -> String[]
+     		sendNotification(ApplicationFacade.NAME_SHEETS_EXCEL,event.result.data);
      	}
      	
      	
