@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="444" height="560" xmlns:merapi="merapi.*" >
+<mx:Script>
+	<![CDATA[	
+    import com.probertson.utils.GZIPEncoder;
+	import mx.rpc.events.ResultEvent;
+	import merapi.messages.Message;
+	import flash.filesystem.File;
+	import mx.controls.Alert;  
+	import mx.collections.ArrayList;
+	
+	public static const EXECUTE_QUERY:String='ExecuteQuery';
+	public static const CANCEL_QUERY:String='CancelQuery'; 
+	public static const VIEW_CONNECTION_MANAGER:String="viewConnectionManager";	
+	
+
+
+	]]>
+</mx:Script>
+    <mx:TabNavigator x="10" y="10" width="422" height="527">
+        <mx:Canvas label="Fichier Excel" width="100%" height="100%" id="canvas3">
+   
+                <mx:Button label="Executer" x="10" y="99" click="dispatchEvent(new Event(EXECUTE_QUERY,true));" id="button2"/>
+            
+                <mx:DataGrid width="397" height="265" x="10" y="189" id="sqlresult">
+                    
+                </mx:DataGrid>
+           
+                <mx:TextArea x="101" y="100" width="309" height="81" id="responseSQL"/>
+            
+                <mx:Button x="12" y="159" label="Cancel" click="dispatchEvent(new Event(CANCEL_QUERY,true));"/>
+            
+                <mx:Button x="10" y="462" label="Retour" click="dispatchEvent(new Event(VIEW_CONNECTION_MANAGER,true));"/>
+                <mx:ComboBox x="10" y="58" width="114" id="sheetNumber"></mx:ComboBox>
+                <mx:Label x="10" y="32" text="Feuille numéro :"/>
+            
+    
+    
+    
+ 
+    
+        </mx:Canvas>
+    </mx:TabNavigator>
+</mx:Canvas>
+
