@@ -1,5 +1,7 @@
 package dataoncloud.view
 {
+	import __AS3__.vec.Vector;
+	
 	import dataoncloud.ApplicationFacade;
 	import dataoncloud.model.vo.MySQLQuery;
 	import dataoncloud.view.components.QueryExplorer;
@@ -7,6 +9,8 @@ package dataoncloud.view
 	
 	import flash.events.Event;
 	import flash.utils.ByteArray;
+	
+	import mx.collections.ArrayCollection;
 	
 	import org.puremvc.as3.interfaces.*;
 	import org.puremvc.as3.patterns.mediator.Mediator;
@@ -18,6 +22,8 @@ package dataoncloud.view
     {
         // Cannonical name of the Mediator
         public static const NAME:String = "QueryExplorerMediator";
+        
+        var myVector:Vector.<Array>= new Vector.<Array>();
         
         /**
          * Constructor. 
@@ -69,8 +75,16 @@ package dataoncloud.view
                     this.queryExplorer.responseSQL.text=note.getBody().data;
                     break;
                 case ApplicationFacade.SQL_RESULT_XML:
-                var myXML:XML= new XML((note.getBody() as ByteArray).toString());
-                    this.queryExplorer.sqlresult.dataProvider=myXML.session;
+                
+                //var myVector:ByteArray= (note.getBody() as ByteArray);
+                var myVector:Array= note.getBody() as Array;
+             /*   for(var i:int = 0; i < myVector2.length; i++)
+            {
+               myVector.push(myVector2[i]);
+            }*/
+
+                   
+                    this.queryExplorer.sqlresult.dataProvider=myVector;//.readObject() as ArrayCollection);
                     break;
                     case ApplicationFacade.VIEW_CONNECTION_MANAGER:
                     this.queryExplorer.clearText();

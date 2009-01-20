@@ -26,7 +26,7 @@
          
          } 
          else if ((event.result as Message).type=='sqlResultStop'){
-                    Alert.show('stop');
+                    Alert.show('stop2');
                     sqlresult.dataProvider=providerSql;
                 }
                 else if((event.result as Message).type=='sqlInfo'){

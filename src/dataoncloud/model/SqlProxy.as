@@ -1,12 +1,7 @@
 package dataoncloud.model
 {
-	import com.probertson.utils.GZIPEncoder;
-	
 	import dataoncloud.ApplicationFacade;
 	import dataoncloud.model.vo.MySQLQuery;
-	
-	import flash.filesystem.File;
-	import flash.utils.ByteArray;
 	
 	import merapi.*;
 	import merapi.events.MerapiErrorEvent;
@@ -159,16 +154,20 @@ package dataoncloud.model
      	}
      	private function sqlResultHandler(event:ResultEvent):void
      	{
-     		var path:String = event.result.data as String;
+     		//var path:String = event.result.data as String;
+     		var partResult:Array=null;
+     		partResult= event.result.data as Array;
      		
-     		var myFile:File = new File();            
-            var encoder:GZIPEncoder = new GZIPEncoder();
+     		/*var partResult:ArrayList.<String>=event.result as ArrayList.<String>;*/
+     	//	Alert.show(partResult);
+     		//var myFile:File = new File();            
+            //var encoder:GZIPEncoder = new GZIPEncoder();
                
-            myFile.nativePath=path;                       
-            var tabByte:ByteArray=encoder.uncompressToByteArray(myFile);            
+           // myFile.nativePath=path;                       
+           // var tabByte:ByteArray=encoder.uncompressToByteArray(myFile);            
             //var myXML:XML= new XML(tabByte.toString());
             
-            sendNotification(ApplicationFacade.SQL_RESULT_XML,tabByte);            
+            sendNotification(ApplicationFacade.SQL_RESULT_XML,partResult);            
      	}
      	
      	
