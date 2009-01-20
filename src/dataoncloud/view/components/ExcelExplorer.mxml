@@ -10,6 +10,7 @@
 	import mx.collections.ArrayList;
 	
 	public static const LOAD_SHEET:String='LoadSheet';
+	public static const BACK:String='back';
 
 	
 
@@ -27,7 +28,7 @@
             
                 <mx:Button x="105" y="99" label="Cancel" click=""/>
             
-                <mx:Button x="10" y="462" label="Retour" click=""/>
+                <mx:Button x="10" y="462" label="Retour" click="dispatchEvent(new Event(BACK,true));"/>
                 <mx:ComboBox x="10" y="58" width="114" id="sheetNames"></mx:ComboBox>
                 <mx:Label x="10" y="32" text="Feuille numéro :"/>
             

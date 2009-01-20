@@ -28,6 +28,7 @@ package dataoncloud.view
             // it will be stored in the inherited viewComponent property
             super( NAME, viewComponent );
             this.excelExplorer.addEventListener(ExcelExplorer.LOAD_SHEET,onLoadSheet);
+            this.excelExplorer.addEventListener(ExcelExplorer.BACK,onBack);
             
         }
 
@@ -67,5 +68,9 @@ package dataoncloud.view
         	var myExcelSheet:MyExcelSheet = new MyExcelSheet(this.path,this.excelExplorer.sheetNames.selectedItem as String);
         	sendNotification(ApplicationFacade.LOAD_EXCEL_SHEET,myExcelSheet);
         }
+        private function onBack(event:Event):void
+        {       
+        	sendNotification(ApplicationFacade.VIEW_CONNECTION_MANAGER,null);
+        }        
     }
 }
