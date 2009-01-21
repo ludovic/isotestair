@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="444" height="560" xmlns:merapi="merapi.*" >
 <mx:Script>
-	<![CDATA[	
+	<![CDATA[
+		import flash.text.engine.TabAlignment;
+		import mx.collections.ArrayCollection;
+		import mx.controls.dataGridClasses.DataGridColumn;	
     import com.probertson.utils.GZIPEncoder;
 	import mx.rpc.events.ResultEvent;
 	import merapi.messages.Message;
@@ -17,6 +20,32 @@
 	{
 		this.excelResult.dataProvider={};
 	}
+	
+	private function onEnTetesChange():void
+	{
+		var tab:Array = (this.excelResult.dataProvider as ArrayCollection).toArray();
+		var i:int;
+		if(tab.length !=0)
+			if(en_tetes.selected)
+			{
+				this.excelResult.dataProvider=tab.splice(1,tab.length-1);
+					var columnsTab:Array = this.excelResult.columns;
+					for (i=0;i<columnsTab.length;i++)
+						(columnsTab[i] as DataGridColumn).headerText=tab[0][i];
+			}
+			else
+			{			
+				var columnTabName:Array = new Array(this.excelResult.columns.length);
+				for(i=0;i<this.excelResult.columns.length;i++)
+					columnTabName[i]=(this.excelResult.columns[i] as DataGridColumn).headerText;
+				tab.splice(0,0, columnTabName);
+				this.excelResult.dataProvider=tab;
+			}
+		else
+		{
+			this.excelResult.dataProvider={};
+		}
+	}
 
 	]]>
 </mx:Script>
@@ -30,14 +59,10 @@
                 </mx:DataGrid>
             
                 <mx:Button x="10" y="462" label="Retour" click="dispatchEvent(new Event(BACK,true));"/>
-                <mx:ComboBox x="10" y="36" width="124" id="sheetNames"></mx:ComboBox>
+                <mx:ComboBox x="10" y="36" width="124" id="sheetNames" change="dispatchEvent(new Event(LOAD_SHEET,true));"></mx:ComboBox>
                 <mx:Label x="10" y="10" text="Feuille numéro :"/>
+                <mx:CheckBox x="159" y="36" label="En-têtes" width="89" id="en_tetes" change="onEnTetesChange()"/>
             
-    
-    
-    
- 
-    
         </mx:Canvas>
     </mx:TabNavigator>
 </mx:Canvas>

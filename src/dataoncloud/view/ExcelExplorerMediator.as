@@ -6,6 +6,8 @@ package dataoncloud.view
 	
 	import flash.events.Event;
 	
+	import mx.controls.dataGridClasses.DataGridColumn;
+	
 	import org.puremvc.as3.interfaces.*;
 	import org.puremvc.as3.patterns.mediator.Mediator;
     
@@ -52,7 +54,26 @@ package dataoncloud.view
                     this.excelExplorer.sheetNames.dataProvider=note.getBody() as Array;
                 break;
                 case ApplicationFacade.EXCEL_DATA:
-                    this.excelExplorer.excelResult.dataProvider=note.getBody() as Array;
+                	var result:Array = (note.getBody() as Array);
+                	if (this.excelExplorer.en_tetes.selected)
+                	{
+	                	if(result!=null)
+	                	{
+	                		this.excelExplorer.excelResult.dataProvider=result.splice(1,result.length-1);
+	                    	var columnsTab:Array = this.excelExplorer.excelResult.columns;
+	                    	for (var i:int=0;i<columnsTab.length;i++)
+	                    		(columnsTab[i] as DataGridColumn).headerText=result[0][i];
+	                 	}
+	                 	else
+	                 	{
+	                 		this.excelExplorer.excelResult.dataProvider={};
+	                 	}
+	                }
+	                else
+	                {
+	                	this.excelExplorer.excelResult.dataProvider={};
+	                	this.excelExplorer.excelResult.dataProvider=result;
+	                }                  
                 break;	
             }
         }
