@@ -157,10 +157,10 @@
     
     <mx:Form x="50" y="34" width="330" height="117" id="form1" borderStyle="solid" borderColor="#DEDCDC">
         <mx:FormItem label="Login">
-            <mx:TextInput id="txtLogin"/>
+            <mx:TextInput id="txtLogin" text="root"/>
         </mx:FormItem>
         <mx:FormItem label="Mot de passe">
-            <mx:TextInput id="txtMdp" displayAsPassword="true"/>
+            <mx:TextInput id="txtMdp" displayAsPassword="true" text="test"/>
         </mx:FormItem>
         <mx:FormItem label="Type">
             <mx:ComboBox id="cmbType" dataProvider="{typeProviders}" labelField="label" change="selectChange()" width="161">

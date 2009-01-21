@@ -5,12 +5,8 @@ package dataoncloud.view
 	import dataoncloud.ApplicationFacade;
 	import dataoncloud.model.vo.MySQLQuery;
 	import dataoncloud.view.components.QueryExplorer;
-	import dataoncloud.view.events.DocEvent;
-	
+	import mx.controls.Alert;  
 	import flash.events.Event;
-	import flash.utils.ByteArray;
-	
-	import mx.collections.ArrayCollection;
 	
 	import org.puremvc.as3.interfaces.*;
 	import org.puremvc.as3.patterns.mediator.Mediator;
@@ -64,8 +60,10 @@ package dataoncloud.view
          * 
          * @param INotification a notification 
          */
+         
         override public function handleNotification( note:INotification ):void 
         {
+        	 
             switch ( note.getName() ) 
             {
                 case ApplicationFacade.VIEW_QUERY_EXPLORER:
@@ -77,14 +75,15 @@ package dataoncloud.view
                 case ApplicationFacade.SQL_RESULT_XML:
                 
                 //var myVector:ByteArray= (note.getBody() as ByteArray);
-                var myVector:Array= note.getBody() as Array;
+             
              /*   for(var i:int = 0; i < myVector2.length; i++)
             {
                myVector.push(myVector2[i]);
             }*/
-
-                   
-                    this.queryExplorer.sqlresult.dataProvider=myVector;//.readObject() as ArrayCollection);
+                    var myVector:Array=null;
+                    myVector = note.getBody() as Array;
+                  Alert.show("fin!!");
+                   //this.queryExplorer.sqlresult.dataProvider=myVector;
                     break;
                     case ApplicationFacade.VIEW_CONNECTION_MANAGER:
                     this.queryExplorer.clearText();
