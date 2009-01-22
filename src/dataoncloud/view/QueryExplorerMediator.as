@@ -5,8 +5,10 @@ package dataoncloud.view
 	import dataoncloud.ApplicationFacade;
 	import dataoncloud.model.vo.MySQLQuery;
 	import dataoncloud.view.components.QueryExplorer;
-	import mx.controls.Alert;  
+	
 	import flash.events.Event;
+	
+	import mx.controls.dataGridClasses.DataGridColumn;
 	
 	import org.puremvc.as3.interfaces.*;
 	import org.puremvc.as3.patterns.mediator.Mediator;
@@ -18,8 +20,6 @@ package dataoncloud.view
     {
         // Cannonical name of the Mediator
         public static const NAME:String = "QueryExplorerMediator";
-        
-        var myVector:Vector.<Array>= new Vector.<Array>();
         
         /**
          * Constructor. 
@@ -63,7 +63,7 @@ package dataoncloud.view
          
         override public function handleNotification( note:INotification ):void 
         {
-        	 
+        	var j:int;
             switch ( note.getName() ) 
             {
                 case ApplicationFacade.VIEW_QUERY_EXPLORER:
@@ -73,21 +73,23 @@ package dataoncloud.view
                     this.queryExplorer.responseSQL.text+=note.getBody().data+'\n';
                 break;
                 case ApplicationFacade.SQL_RESULT_XML:
-                
-                //var myVector:ByteArray= (note.getBody() as ByteArray);
-             
-             /*   for(var i:int = 0; i < myVector2.length; i++)
-            {
-               myVector.push(myVector2[i]);
-            }*/
-                    var myVector:Array=null;
-                    myVector = note.getBody() as Array;
-                  Alert.show("fin!!");
-                   //this.queryExplorer.sqlresult.dataProvider=myVector;
-                    break;
-                    case ApplicationFacade.VIEW_CONNECTION_MANAGER:
-                    this.queryExplorer.clearText();
-                    break;
+
+                    var myVector:Vector.<Object> = (note.getBody() as Vector.<Object>);
+                    var tab:Array = new Array();
+                    var columnName:Array = myVector[0] as Array;
+                    for(j=1;j<myVector.length;j++)                    
+                    	tab[j-1]=myVector[j];
+                    
+                    this.queryExplorer.sqlresult.dataProvider={};
+                    this.queryExplorer.sqlresult.dataProvider=tab;
+ 
+                    if (tab.length>0)
+                    	for(j=0;j<columnName.length;j++)
+                    		(this.queryExplorer.sqlresult.columns[j] as DataGridColumn).headerText=columnName[j];                          	
+				break;
+                case ApplicationFacade.VIEW_CONNECTION_MANAGER:
+                	this.queryExplorer.clearText();
+                break;
 
             }
         }

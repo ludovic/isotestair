@@ -212,17 +212,19 @@ package dataoncloud.model
              deser += getTimer()-begin;
                 if (partResult==null)
                 {
-                	var all:int=getTimer();
+                	var all:int=getTimer();                	
                     partResult = array;
                     //trace("dest 1");
                 }
                 else
                 {
                 	begin = getTimer();
-                   partResult.push(array);
+                   //partResult.push(array);
+					for(var i:int=0; i<array.length;i++)
+						partResult.push(array[i]);
                    //trace("dest 2");
                 }
-               
+               	myFile.deleteFile();
                 //trace(getTimer()-begin);
                 concat += getTimer()-begin;
             }
@@ -235,12 +237,7 @@ package dataoncloud.model
                 sendNotification(ApplicationFacade.SQL_RESULT_XML,partResult);
                 sendNotification(ApplicationFacade.INFO_SQL_QUERY,event.result);
                 partResult=null;        
-            }
-     		
-     		
-                    
-                    
-                    
+            }    
                  
      		/*var partResult:ArrayList.<String>=event.result as ArrayList.<String>;*/
      	//	Alert.show(partResult);
