@@ -2,18 +2,13 @@ package dataoncloud.view
 {
 	import dataoncloud.ApplicationFacade;
 	import dataoncloud.model.vo.MyExcelSheet;
-	import dataoncloud.view.components.ExcelExplorer;
-	
-	import flash.events.Event;
-	
-	import mx.controls.dataGridClasses.DataGridColumn;
-	
+	import dataoncloud.view.components.ExcelExplorer;	
+	import flash.events.Event;	
+	import mx.controls.dataGridClasses.DataGridColumn;	
 	import org.puremvc.as3.interfaces.*;
 	import org.puremvc.as3.patterns.mediator.Mediator;
     
-    /**
-     * A Mediator for interacting with the EmployeeLogin component.
-     */
+
     public class ExcelExplorerMediator extends Mediator implements IMediator
     {
         // Cannonical name of the Mediator

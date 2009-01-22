@@ -112,6 +112,11 @@
             
             private var typeProviders:ArrayCollection = new ArrayCollection(
                 [new TypeBD(0,"Oracle"),new TypeBD(2,"SQL Server"),new TypeBD(3,"MySQL"),new TypeBD(4,"PostgreSQL")]);
+            
+            private function getTypeProviders():ArrayCollection
+            {
+            	return this.typeProviders;
+            }
 
                 
             private function selectChange():void{
@@ -157,13 +162,13 @@
     
     <mx:Form x="50" y="34" width="330" height="117" id="form1" borderStyle="solid" borderColor="#DEDCDC">
         <mx:FormItem label="Login">
-            <mx:TextInput id="txtLogin" text="root"/>
+            <mx:TextInput id="txtLogin"/>
         </mx:FormItem>
         <mx:FormItem label="Mot de passe">
-            <mx:TextInput id="txtMdp" displayAsPassword="true" text="test"/>
+            <mx:TextInput id="txtMdp" displayAsPassword="true"/>
         </mx:FormItem>
         <mx:FormItem label="Type">
-            <mx:ComboBox id="cmbType" dataProvider="{typeProviders}" labelField="label" change="selectChange()" width="161">
+            <mx:ComboBox id="cmbType" dataProvider="{getTypeProviders()}" labelField="label" change="selectChange()" width="161">
             </mx:ComboBox>
         </mx:FormItem>
     </mx:Form>

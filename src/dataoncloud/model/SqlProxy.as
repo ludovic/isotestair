@@ -22,9 +22,7 @@ package dataoncloud.model
 	import org.puremvc.as3.interfaces.*;
 	import org.puremvc.as3.patterns.proxy.Proxy;
     
-    /**
-     * A proxy for the User data
-     */
+
     public class SqlProxy extends Proxy implements IProxy
     {
     	private var bridgeInst:BridgeInstance = new BridgeInstance();
@@ -86,8 +84,7 @@ package dataoncloud.model
     				bridgeInst.sendMessage(new Message("dataSource_getDBSqlServer",ds));
     			break;
     			// Mysql
-    			case 3:
-    				//ds = login + "##" + password + "##" + type + "##" +  "jdbc:mysql://" + host + ":" + port;
+    			case 3:    				
     				bridgeInst.sendMessage(new Message("dataSource_getDBMySql",ds));
     			break;
     			//Postgre 
@@ -175,87 +172,49 @@ package dataoncloud.model
      		sendNotification(ApplicationFacade.INFO_SQL_QUERY,message);
      	}
      	
-     	var partResult:Vector.<Object>=null;
-     	var deser:int=0;
-     	var concat:int=0;
-     	var lect:int=0;
+     	private var partResult:Vector.<Object>=null;
      	private function sqlResultHandler(event:ResultEvent):void
-     	{
-     		//var path:String = event.result.data as String;
-     		
+     	{     		
      		if(event.result.type=='sqlResult')
-            {
-            	
-                /*if (partResult==null)
-                {
-                  //  partResult = event.result.data as Array;
-                    partResult = event.result.data as Array;
-                }
-                else{
-                    //var partResult2:Array= new Array(event.result.data as Array);
-                   partResult = partResult.concat(event.result.data as Array);
-                   }*/
-                   var begin : int = getTimer();
-               var path:String= bridgeInst.lastMessage.data as String;
-                 //trace(path);
-                 var myFile:File = new File();
+            {        	
+
+				var begin : int = getTimer();
+				var path:String= bridgeInst.lastMessage.data as String;
+
+				var myFile:File = new File();
                 myFile.nativePath=path; 
-               var encoder:GZIPEncoder = new GZIPEncoder();
-               var byteArray:ByteArray= new ByteArray();
-               byteArray=encoder.uncompressToByteArray(myFile);
-              //  trace ("Lect:"+(getTimer()-begin));
-              lect += getTimer()-begin;
-                begin = getTimer();
+				var encoder:GZIPEncoder = new GZIPEncoder();
+				var byteArray:ByteArray= new ByteArray();
+				byteArray=encoder.uncompressToByteArray(myFile);
+    
                 var array:Vector.<Object> = Vector.<Object>(byteArray.readObject())
              
-             // trace ("DESER:"+(getTimer()-begin));
-             deser += getTimer()-begin;
                 if (partResult==null)
                 {
                 	var all:int=getTimer();                	
                     partResult = array;
-                    //trace("dest 1");
                 }
                 else
                 {
                 	begin = getTimer();
-                   //partResult.push(array);
 					for(var i:int=0; i<array.length;i++)
 						partResult.push(array[i]);
-                   //trace("dest 2");
                 }
                	myFile.deleteFile();
-                //trace(getTimer()-begin);
-                concat += getTimer()-begin;
             }
             else if(event.result.type=='sqlStop')
             {
-            	trace( "TOTAL:"+(getTimer()-all));
-            	trace ("LECT TOTAL:"+lect);
-            	trace ("DESER TOTAL:"+deser);
-            	trace ("CONCAT TOTAL:"+concat);
                 sendNotification(ApplicationFacade.SQL_RESULT_XML,partResult);
                 sendNotification(ApplicationFacade.INFO_SQL_QUERY,event.result);
                 partResult=null;        
-            }    
-                 
-     		/*var partResult:ArrayList.<String>=event.result as ArrayList.<String>;*/
-     	//	Alert.show(partResult);
-     		//var myFile:File = new File();            
-            //var encoder:GZIPEncoder = new GZIPEncoder();
-               
-           // myFile.nativePath=path;                       
-           // var tabByte:ByteArray=encoder.uncompressToByteArray(myFile);            
-            //var myXML:XML= new XML(tabByte.toString());
-            
-                        
+            }
      	}
      	private function namesSheeExcelHandler(event:ResultEvent):void
      	{
      		//event.result.getData -> String[]
      		sendNotification(ApplicationFacade.NAME_SHEETS_EXCEL,event.result.data);
      	}
-     	var result:Array=null;
+     	private var result:Array=null;
      	private function excelResultHandler(event:ResultEvent):void
      	{
      		

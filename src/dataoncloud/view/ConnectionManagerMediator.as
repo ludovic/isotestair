@@ -34,22 +34,11 @@ package dataoncloud.view
         }
         
 
-
 		private function get connectionManager():ConnectionManager
 		{
 			return viewComponent as ConnectionManager;
 		}
-		
-		
-		
-        /**
-         * List all notifications this Mediator is interested in.
-         * <P>
-         * Automatically called by the framework when the mediator
-         * is registered with the view.</P>
-         * 
-         * @return Array the list of Nofitication names
-         */
+
         override public function listNotificationInterests():Array 
         {
             return [ ApplicationFacade.CONNECTION_TEST_RESULT,
@@ -57,15 +46,7 @@ package dataoncloud.view
             ApplicationFacade.VIEW_QUERY_EXPLORER  ];
         }
 
-        /**
-         * Handle all notifications this Mediator is interested in.
-         * <P>
-         * Called by the framework when a notification is sent that
-         * this mediator expressed an interest in when registered
-         * (see <code>listNotificationInterests</code>.</P>
-         * 
-         * @param INotification a notification 
-         */
+
         override public function handleNotification( note:INotification ):void 
         {
         	switch(note.getName())

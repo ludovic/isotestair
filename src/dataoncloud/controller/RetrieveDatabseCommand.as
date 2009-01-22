@@ -10,9 +10,6 @@ package dataoncloud.controller
 		override public function execute(notification:INotification):void
 		{
 			var connection:Object = notification.getBody();
-			
-			
-        	
         	var sqlProxy:SqlProxy = facade.retrieveProxy(SqlProxy.NAME) as SqlProxy;
         	sqlProxy.retrieveDatabase(connection);
 		}

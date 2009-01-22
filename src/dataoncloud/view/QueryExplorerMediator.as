@@ -35,14 +35,6 @@ package dataoncloud.view
             
         }
 
-        /**
-         * List all notifications this Mediator is interested in.
-         * <P>
-         * Automatically called by the framework when the mediator
-         * is registered with the view.</P>
-         * 
-         * @return Array the list of Nofitication names
-         */
         override public function listNotificationInterests():Array 
         {
             return [ ApplicationFacade.VIEW_QUERY_EXPLORER,
@@ -50,16 +42,6 @@ package dataoncloud.view
             		ApplicationFacade.SQL_RESULT_XML,
             		ApplicationFacade.VIEW_CONNECTION_MANAGER ];
         }
-
-        /**
-         * Handle all notifications this Mediator is interested in.
-         * <P>
-         * Called by the framework when a notification is sent that
-         * this mediator expressed an interest in when registered
-         * (see <code>listNotificationInterests</code>.</P>
-         * 
-         * @param INotification a notification 
-         */
          
         override public function handleNotification( note:INotification ):void 
         {
