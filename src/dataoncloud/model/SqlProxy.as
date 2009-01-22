@@ -1,5 +1,7 @@
 package dataoncloud.model
 {
+	import __AS3__.vec.Vector;
+	
 	import com.probertson.utils.GZIPEncoder;
 	
 	import dataoncloud.ApplicationFacade;
@@ -8,6 +10,7 @@ package dataoncloud.model
 	
 	import flash.filesystem.File;
 	import flash.utils.ByteArray;
+	import flash.utils.getTimer;
 	
 	import merapi.*;
 	import merapi.events.MerapiErrorEvent;
@@ -24,13 +27,14 @@ package dataoncloud.model
      */
     public class SqlProxy extends Proxy implements IProxy
     {
+    	private var bridgeInst:BridgeInstance = new BridgeInstance();
         public static const NAME:String = "SqlProxy";
         
         public function SqlProxy ( data:Object = null ) 
         {
             super ( NAME, data );
-           	Bridge.instance.addEventListener(ResultEvent.RESULT,onResultHandler,false,0,true);
-    		Bridge.instance.addEventListener(MerapiErrorEvent.CONNECT_FAILURE_ERROR, onFaultHandler,false,0,true);
+           	bridgeInst.addEventListener(ResultEvent.RESULT,onResultHandler,false,0,true);
+    		bridgeInst.addEventListener(MerapiErrorEvent.CONNECT_FAILURE_ERROR, onFaultHandler,false,0,true);
         }
         
         // collections
@@ -68,7 +72,7 @@ package dataoncloud.model
 			ds = this.rewriteURL(connection);
  		
  		
-    		Bridge.instance.sendMessage( new Message( 'dataSource', ds ) );
+    		bridgeInst.sendMessage( new Message( 'dataSource', ds ) );
     	}
     	
 	   	public function retrieveDatabase(connection:Object):void
@@ -79,17 +83,17 @@ package dataoncloud.model
     			// Sql Server
     			case 2:
     				ds = ds + ";database=master";
-    				Bridge.instance.sendMessage(new Message("dataSource_getDBSqlServer",ds));
+    				bridgeInst.sendMessage(new Message("dataSource_getDBSqlServer",ds));
     			break;
     			// Mysql
     			case 3:
     				//ds = login + "##" + password + "##" + type + "##" +  "jdbc:mysql://" + host + ":" + port;
-    				Bridge.instance.sendMessage(new Message("dataSource_getDBMySql",ds));
+    				bridgeInst.sendMessage(new Message("dataSource_getDBMySql",ds));
     			break;
     			//Postgre 
     			case 4:
     				ds = ds + "/postgres";
-    				Bridge.instance.sendMessage(new Message("dataSource_getDBPostgre",ds));
+    				bridgeInst.sendMessage(new Message("dataSource_getDBPostgre",ds));
     			break;
     		}
     	}
@@ -99,21 +103,21 @@ package dataoncloud.model
     		var ds:String;
     		ds = this.rewriteURL(mySQLQuery.connection);
 				
-    		Bridge.instance.sendMessage( new Message( 'sqlRequest_request', ds + "##" + mySQLQuery.query ) );
+    		bridgeInst.sendMessage( new Message( 'sqlRequest_request', ds + "##" + mySQLQuery.query ) );
     	}
     	
     	public function cancelQuery():void
     	{				
-    		Bridge.instance.sendMessage( new Message( 'sqlRequest_cancel',null) );
+    		bridgeInst.sendMessage( new Message( 'sqlRequest_cancel',null) );
     	}
     	
     	public function getNameExcelSheets(path:String):void
     	{
-    		Bridge.instance.sendMessage( new Message( 'getNameSheets',path) );
+    		bridgeInst.sendMessage( new Message( 'getNameSheets',path) );
     	}
     	public function loadExcelSheet(myExcelSheet:MyExcelSheet):void
     	{
-    		Bridge.instance.sendMessage( new Message( 'getExcelData',myExcelSheet.path+'##'+myExcelSheet.sheetName));
+    		bridgeInst.sendMessage( new Message( 'getExcelData',myExcelSheet.path+'##'+myExcelSheet.sheetName));
     	}   	
     	
     	// Result methods
@@ -139,6 +143,9 @@ package dataoncloud.model
     			case 'sqlResult':
     				this.sqlResultHandler(event);
     			break;
+    			case 'sqlStop':
+                    this.sqlResultHandler(event);
+                break;
     			case 'nameSheetsExcel':
     				this.namesSheeExcelHandler(event);
     			break;
@@ -167,18 +174,81 @@ package dataoncloud.model
      		var message:Object = event.result;
      		sendNotification(ApplicationFacade.INFO_SQL_QUERY,message);
      	}
+     	
+     	var partResult:Vector.<Object>=null;
+     	var deser:int=0;
+     	var concat:int=0;
+     	var lect:int=0;
      	private function sqlResultHandler(event:ResultEvent):void
      	{
-     		var path:String = event.result.data as String;
+     		//var path:String = event.result.data as String;
      		
-     		var myFile:File = new File();            
-            var encoder:GZIPEncoder = new GZIPEncoder();
+     		if(event.result.type=='sqlResult')
+            {
+            	
+                /*if (partResult==null)
+                {
+                  //  partResult = event.result.data as Array;
+                    partResult = event.result.data as Array;
+                }
+                else{
+                    //var partResult2:Array= new Array(event.result.data as Array);
+                   partResult = partResult.concat(event.result.data as Array);
+                   }*/
+                   var begin : int = getTimer();
+               var path:String= bridgeInst.lastMessage.data as String;
+                 //trace(path);
+                 var myFile:File = new File();
+                myFile.nativePath=path; 
+               var encoder:GZIPEncoder = new GZIPEncoder();
+               var byteArray:ByteArray= new ByteArray();
+               byteArray=encoder.uncompressToByteArray(myFile);
+              //  trace ("Lect:"+(getTimer()-begin));
+              lect += getTimer()-begin;
+                begin = getTimer();
+                var array:Vector.<Object> = Vector.<Object>(byteArray.readObject())
+             
+             // trace ("DESER:"+(getTimer()-begin));
+             deser += getTimer()-begin;
+                if (partResult==null)
+                {
+                	var all:int=getTimer();                	
+                    partResult = array;
+                    //trace("dest 1");
+                }
+                else
+                {
+                	begin = getTimer();
+                   //partResult.push(array);
+					for(var i:int=0; i<array.length;i++)
+						partResult.push(array[i]);
+                   //trace("dest 2");
+                }
+               	myFile.deleteFile();
+                //trace(getTimer()-begin);
+                concat += getTimer()-begin;
+            }
+            else if(event.result.type=='sqlStop')
+            {
+            	trace( "TOTAL:"+(getTimer()-all));
+            	trace ("LECT TOTAL:"+lect);
+            	trace ("DESER TOTAL:"+deser);
+            	trace ("CONCAT TOTAL:"+concat);
+                sendNotification(ApplicationFacade.SQL_RESULT_XML,partResult);
+                sendNotification(ApplicationFacade.INFO_SQL_QUERY,event.result);
+                partResult=null;        
+            }    
+                 
+     		/*var partResult:ArrayList.<String>=event.result as ArrayList.<String>;*/
+     	//	Alert.show(partResult);
+     		//var myFile:File = new File();            
+            //var encoder:GZIPEncoder = new GZIPEncoder();
                
-            myFile.nativePath=path;                       
-            var tabByte:ByteArray=encoder.uncompressToByteArray(myFile);            
+           // myFile.nativePath=path;                       
+           // var tabByte:ByteArray=encoder.uncompressToByteArray(myFile);            
             //var myXML:XML= new XML(tabByte.toString());
             
-            sendNotification(ApplicationFacade.SQL_RESULT_XML,tabByte);            
+                        
      	}
      	private function namesSheeExcelHandler(event:ResultEvent):void
      	{

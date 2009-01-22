@@ -1,12 +1,14 @@
 package dataoncloud.view
 {
+	import __AS3__.vec.Vector;
+	
 	import dataoncloud.ApplicationFacade;
 	import dataoncloud.model.vo.MySQLQuery;
 	import dataoncloud.view.components.QueryExplorer;
-	import dataoncloud.view.events.DocEvent;
 	
 	import flash.events.Event;
-	import flash.utils.ByteArray;
+	
+	import mx.controls.dataGridClasses.DataGridColumn;
 	
 	import org.puremvc.as3.interfaces.*;
 	import org.puremvc.as3.patterns.mediator.Mediator;
@@ -58,8 +60,10 @@ package dataoncloud.view
          * 
          * @param INotification a notification 
          */
+         
         override public function handleNotification( note:INotification ):void 
         {
+        	var j:int;
             switch ( note.getName() ) 
             {
                 case ApplicationFacade.VIEW_QUERY_EXPLORER:
@@ -69,9 +73,24 @@ package dataoncloud.view
                     this.queryExplorer.responseSQL.text+=note.getBody().data+'\n';
                 break;
                 case ApplicationFacade.SQL_RESULT_XML:
-                var myXML:XML= new XML((note.getBody() as ByteArray).toString());
-                    this.queryExplorer.sqlresult.dataProvider=myXML.session;
+
+                    var myVector:Vector.<Object> = (note.getBody() as Vector.<Object>);
+                    var tab:Array = new Array();
+                    var columnName:Array = myVector[0] as Array;
+                    for(j=1;j<myVector.length;j++)                    
+                    	tab[j-1]=myVector[j];
+                    
+                    this.queryExplorer.sqlresult.dataProvider={};
+                    this.queryExplorer.sqlresult.dataProvider=tab;
+ 
+                    if (tab.length>0)
+                    	for(j=0;j<columnName.length;j++)
+                    		(this.queryExplorer.sqlresult.columns[j] as DataGridColumn).headerText=columnName[j];                          	
+				break;
+                case ApplicationFacade.VIEW_CONNECTION_MANAGER:
+                	this.queryExplorer.clearText();
                 break;
+
             }
         }
         
@@ -84,7 +103,7 @@ package dataoncloud.view
         {
         	var mySQLQuery:MySQLQuery = new MySQLQuery(this.queryExplorer.connection,this.queryExplorer.requette.text);        	
         	sendNotification(ApplicationFacade.EXECUTE_QUERY,mySQLQuery);
-        }
+        } 
         
         private function onCancel(event:Event):void
         {        	
