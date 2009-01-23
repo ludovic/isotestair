@@ -1,7 +1,7 @@
 package	 dataoncloud.controller
 {
     import dataoncloud.model.SqlProxy;
-    import dataoncloud.model.vo.MySQLQuery;
+    import dataoncloud.model.vo.SQLQuery;
     
     import org.puremvc.as3.interfaces.*;
     import org.puremvc.as3.patterns.command.*;
@@ -11,7 +11,7 @@ package	 dataoncloud.controller
     {
         override public function execute( note:INotification ) :void    
         {
-			var mySQLQuery:MySQLQuery = note.getBody() as MySQLQuery;
+			var mySQLQuery:SQLQuery = note.getBody() as SQLQuery;
 
         	       
 			var sqlProxy:SqlProxy = facade.retrieveProxy(SqlProxy.NAME) as SqlProxy;

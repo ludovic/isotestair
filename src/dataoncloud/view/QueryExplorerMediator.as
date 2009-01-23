@@ -3,7 +3,7 @@ package dataoncloud.view
 	import __AS3__.vec.Vector;
 	
 	import dataoncloud.ApplicationFacade;
-	import dataoncloud.model.vo.MySQLQuery;
+	import dataoncloud.model.vo.SQLQuery;
 	import dataoncloud.view.components.QueryExplorer;
 	
 	import flash.events.Event;
@@ -56,6 +56,7 @@ package dataoncloud.view
                 break;
                 case ApplicationFacade.SQL_RESULT_XML:
 
+                    //load the data grid in the component with headers (The header are the first line received)
                     var myVector:Vector.<Object> = (note.getBody() as Vector.<Object>);
                     var tab:Array = new Array();
                     var columnName:Array = myVector[0] as Array;
@@ -79,7 +80,7 @@ package dataoncloud.view
         
         private function onExecute(event:Event):void
         {
-        	var mySQLQuery:MySQLQuery = new MySQLQuery(this.queryExplorer.connection,this.queryExplorer.requette.text);        	
+        	var mySQLQuery:SQLQuery = new SQLQuery(this.queryExplorer.connection,this.queryExplorer.requette.text);        	
         	sendNotification(ApplicationFacade.EXECUTE_QUERY,mySQLQuery);
         } 
         

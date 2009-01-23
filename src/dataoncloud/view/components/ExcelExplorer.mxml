@@ -24,27 +24,30 @@
 	
 	private function onEnTetesChange():void
 	{
-		var tab:Array = (this.excelResult.dataProvider as ArrayCollection).toArray();
-		var i:int;
-		if(tab.length !=0)
-			if(en_tetes.selected)
-			{
-				this.excelResult.dataProvider=tab.splice(1,tab.length-1);
-					var columnsTab:Array = this.excelResult.columns;
-					for (i=0;i<columnsTab.length;i++)
-						(columnsTab[i] as DataGridColumn).headerText=tab[0][i];
-			}
-			else
-			{			
-				var columnTabName:Array = new Array(this.excelResult.columns.length);
-				for(i=0;i<this.excelResult.columns.length;i++)
-					columnTabName[i]=(this.excelResult.columns[i] as DataGridColumn).headerText;
-				tab.splice(0,0, columnTabName);
-				this.excelResult.dataProvider=tab;
-			}
-		else
+		if (this.excelResult!=null && this.excelResult.dataProvider!=null)
 		{
-			this.excelResult.dataProvider={};
+			var tab:Array = (this.excelResult.dataProvider as ArrayCollection).toArray();
+			var i:int;
+			if(tab.length !=0)
+				if(en_tetes.selected)
+				{
+					this.excelResult.dataProvider=tab.splice(1,tab.length-1);
+						var columnsTab:Array = this.excelResult.columns;
+						for (i=0;i<columnsTab.length;i++)
+							(columnsTab[i] as DataGridColumn).headerText=tab[0][i];
+				}
+				else
+				{			
+					var columnTabName:Array = new Array(this.excelResult.columns.length);
+					for(i=0;i<this.excelResult.columns.length;i++)
+						columnTabName[i]=(this.excelResult.columns[i] as DataGridColumn).headerText;
+					tab.splice(0,0, columnTabName);
+					this.excelResult.dataProvider=tab;
+				}
+			else
+			{		
+					this.excelResult.dataProvider={};
+			}
 		}
 	}
 

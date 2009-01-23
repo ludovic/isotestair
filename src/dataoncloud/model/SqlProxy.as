@@ -6,7 +6,7 @@ package dataoncloud.model
 	
 	import dataoncloud.ApplicationFacade;
 	import dataoncloud.model.vo.MyExcelSheet;
-	import dataoncloud.model.vo.MySQLQuery;
+	import dataoncloud.model.vo.SQLQuery;
 	
 	import flash.filesystem.File;
 	import flash.utils.ByteArray;
@@ -39,6 +39,12 @@ package dataoncloud.model
         
         
         // Business methods ---
+        
+        /**
+         * Create the url for JDBC. 
+         * @param connection Object packaging the connection parameters.
+         * @return The url created.
+         */       
         private function rewriteURL(connection:Object):String
         {
         	var ds:String;
@@ -64,6 +70,10 @@ package dataoncloud.model
     		return ds;
         }
         
+        /**
+         * Test the connection paramaters.
+         * @param connection Object packaging the connection parameters.
+         */        
         public function testConnection(connection:Object):void
     	{	
     		var ds:String;
@@ -73,6 +83,10 @@ package dataoncloud.model
     		bridgeInst.sendMessage( new Message( 'dataSource', ds ) );
     	}
     	
+	   	/**
+	   	 * Retrieves the names of databases. 
+	   	 * @param connection Object packaging the connection parameters.
+	   	 */    	
 	   	public function retrieveDatabase(connection:Object):void
     	{
     		var ds:String;
@@ -95,7 +109,11 @@ package dataoncloud.model
     		}
     	}
     	
-    	public function executeQuery(mySQLQuery:MySQLQuery):void
+    	/**
+    	 * Send the query to execute to JDBC.
+    	 * @param mySQLQuery Object packaging the sql query and the connection parameters.
+    	 */    	
+    	public function executeQuery(mySQLQuery:SQLQuery):void
     	{
     		var ds:String;
     		ds = this.rewriteURL(mySQLQuery.connection);
@@ -103,21 +121,37 @@ package dataoncloud.model
     		bridgeInst.sendMessage( new Message( 'sqlRequest_request', ds + "##" + mySQLQuery.query ) );
     	}
     	
+    	/**
+    	 * Cancel the query who is executing in the Java part.
+    	 */
     	public function cancelQuery():void
     	{				
     		bridgeInst.sendMessage( new Message( 'sqlRequest_cancel',null) );
     	}
     	
+    	/**
+    	 * Ask to Java to send to flex the names of the Excel file sheets.
+    	 * @param path The path of the Excel file.
+    	 */
     	public function getNameExcelSheets(path:String):void
     	{
     		bridgeInst.sendMessage( new Message( 'getNameSheets',path) );
     	}
+    	/**
+    	 * Send an order to Java to load an Excel file.
+    	 * @param myExcelSheet Object packaging the file path and the sheet to load.
+    	 * 
+    	 */    	
     	public function loadExcelSheet(myExcelSheet:MyExcelSheet):void
     	{
     		bridgeInst.sendMessage( new Message( 'getExcelData',myExcelSheet.path+'##'+myExcelSheet.sheetName));
     	}   	
     	
     	// Result methods
+    	/**
+    	 * Dispatch the Merapi events between different functions.
+    	 * @param event The Merapi events.
+    	 */    	
     	private function onResultHandler(event : ResultEvent): void
     	{
     		switch(event.result.type)
@@ -137,6 +171,9 @@ package dataoncloud.model
     			case 'sqlInfo':
     				this.infoResultHandler(event);
     			break;
+    			case 'sqlStart':
+    				this.sqlResultHandler(event);
+    			break;
     			case 'sqlResult':
     				this.sqlResultHandler(event);
     			break;
@@ -146,36 +183,61 @@ package dataoncloud.model
     			case 'nameSheetsExcel':
     				this.namesSheeExcelHandler(event);
     			break;
+    			case 'excelStart':
+    				this.excelResultHandler(event);
+    			break;
     			case 'excelResult':
     				this.excelResultHandler(event);
     			break;
     			case 'excelStop':
     				this.excelResultHandler(event);
-    			break;
-    			
+    			break;    			
     		}
     	}
-    	
+    	/**
+    	 * Get the result of the test connection and send it by notification : CONNECTION_TEST_RESULT. 
+    	 * @param event The Merapi event.
+    	 */    	
     	private function testConnectionResultHandler(event : ResultEvent): void
     	{
 			var message:Object = event.result.data;
 			sendNotification(ApplicationFacade.CONNECTION_TEST_RESULT,message);
      	}
+     	/**
+    	 * Get the result of the retrieve of the names of database and send it by notification : RETRIEVE_DATABASE_RESULT. 
+    	 * @param event The Merapi event.
+    	 */
      	private function retrieveDatabaseResultHandler(event:ResultEvent):void
      	{
      		var message:Object = event.result;
      		sendNotification(ApplicationFacade.RETRIEVE_DATABASE_RESULT,message);
      	}
+     	/**
+    	 * Get the info result of the SQL execution and send it by notification : INFO_SQL_QUERY. 
+    	 * @param event The Merapi event.
+    	 */
      	private function infoResultHandler(event:ResultEvent):void
      	{
      		var message:Object = event.result;
      		sendNotification(ApplicationFacade.INFO_SQL_QUERY,message);
      	}
      	
+     	/**
+     	 * Retrieve the result of the sql query
+     	 */
      	private var partResult:Vector.<Object>=null;
+     	 
+     	/**
+     	 * Retrieve the result of the sql query in var partResult and send two notifications : SQL_RESULT_XML, with the result, and INFO_SQL_QUERY, whith the info.
+     	 * @param event The Merapi event. 
+     	 */     	 
      	private function sqlResultHandler(event:ResultEvent):void
      	{     		
-     		if(event.result.type=='sqlResult')
+     		if(event.result.type=='sqlStart')
+     		{
+     			partResult=null;
+			}     		
+     		else if(event.result.type=='sqlResult')
             {        	
 
 				var begin : int = getTimer();
@@ -205,32 +267,41 @@ package dataoncloud.model
             else if(event.result.type=='sqlStop')
             {
                 sendNotification(ApplicationFacade.SQL_RESULT_XML,partResult);
-                sendNotification(ApplicationFacade.INFO_SQL_QUERY,event.result);
-                partResult=null;        
+                sendNotification(ApplicationFacade.INFO_SQL_QUERY,event.result);                        
             }
      	}
+     	/**
+     	 * Retrieve the names of the Excel sheets and send a notification NAME_SHEETS_EXCEL whith the names.
+     	 * @param event The Merapi event. 
+     	 */     	
      	private function namesSheeExcelHandler(event:ResultEvent):void
      	{
      		//event.result.getData -> String[]
      		sendNotification(ApplicationFacade.NAME_SHEETS_EXCEL,event.result.data);
      	}
-     	private var result:Array=null;
+     	/**
+     	 * Retrieve the names of the Excel sheets and send a notification NAME_SHEETS_EXCEL with the names.
+     	 * @param event The Merapi event. 
+     	 */
+     	private var excelResult:Array=null;
      	private function excelResultHandler(event:ResultEvent):void
      	{
      		
+     		if(event.result.type=='excelStart')
+     		{
+     			excelResult=null;
+     		}
      		if(event.result.type=='excelResult')
      		{
-     			if (result==null)
-     				result = event.result.data as Array;
+     			if (excelResult==null)
+     				excelResult = event.result.data as Array;
      			else
-     				result = result.concat(event.result.data as Array);
+     				excelResult = excelResult.concat(event.result.data as Array);
      		}
      		else if(event.result.type=='excelStop')
      		{
-     			sendNotification(ApplicationFacade.EXCEL_DATA,result);
-     			result=null;
-     		}
-     		
+     			sendNotification(ApplicationFacade.EXCEL_DATA,excelResult);
+     		}     		
      	}     	
      	
      	// Fault methods

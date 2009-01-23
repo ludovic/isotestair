@@ -50,6 +50,7 @@ package dataoncloud.view
                     this.excelExplorer.sheetNames.dataProvider=note.getBody() as Array;
                 break;
                 case ApplicationFacade.EXCEL_DATA:
+                	//load the data grid of the component, with the header or not depending on the choice in checkbox "en_tete"
                 	var result:Array = (note.getBody() as Array);
                 	if (this.excelExplorer.en_tetes.selected)
                 	{

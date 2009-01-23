@@ -1,7 +1,7 @@
 package	 dataoncloud.controller
 {
     import dataoncloud.model.SqlProxy;
-    import dataoncloud.model.vo.MySQLQuery;
+    import dataoncloud.model.vo.SQLQuery;
     
     import org.puremvc.as3.interfaces.*;
     import org.puremvc.as3.patterns.command.*;
