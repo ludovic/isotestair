@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:flexunit="flexunit.flexui.*" 
-  xmlns:merapi="merapi.*"  layout="absolute" width="448" height="558" creationComplete="init()" xmlns:components="dataoncloud.view.components.*">
+  xmlns:merapi="merapi.*"  layout="absolute" width="451" height="558" creationComplete="init()" xmlns:components="dataoncloud.view.components.*" horizontalAlign="left" verticalAlign="top">
 	
 <mx:Script>
 		<![CDATA[
@@ -19,7 +19,7 @@
 		<components:ConnectionManager id="connectionManager">
 			
 		</components:ConnectionManager>
-		<components:QueryExplorer id="queryExplorer">
+		<components:QueryExplorer id="queryExplorer"  >
 			
 		</components:QueryExplorer>
 		<components:ExcelExplorer id="excelExplorer">

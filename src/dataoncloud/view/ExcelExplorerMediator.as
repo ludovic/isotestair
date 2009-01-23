@@ -41,6 +41,7 @@ package dataoncloud.view
             switch ( note.getName() ) 
             {
                 case ApplicationFacade.VIEW_EXCEL_EXPLORER:
+                	this.excelExplorer.clear();
                     this.path=note.getBody() as String;                    
                     //Ask the different names of the Excel sheet
                     sendNotification(ApplicationFacade.GET_NAME_SHEETS_EXCEL,this.path);
@@ -84,8 +85,7 @@ package dataoncloud.view
         	sendNotification(ApplicationFacade.LOAD_EXCEL_SHEET,myExcelSheet);
         }
         private function onBack(event:Event):void
-        {       
-        	this.excelExplorer.clear();
+        {       	
         	sendNotification(ApplicationFacade.VIEW_CONNECTION_MANAGER,null);
         }        
     }

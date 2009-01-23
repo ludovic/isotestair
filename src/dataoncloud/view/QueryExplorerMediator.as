@@ -31,7 +31,7 @@ package dataoncloud.view
             super( NAME, viewComponent );
             this.queryExplorer.addEventListener(QueryExplorer.EXECUTE_QUERY,onExecute);
             this.queryExplorer.addEventListener(QueryExplorer.CANCEL_QUERY,onCancel);
-            this.queryExplorer.addEventListener(QueryExplorer.VIEW_CONNECTION_MANAGER,onView);
+            this.queryExplorer.addEventListener(QueryExplorer.VIEW_CONNECTION_MANAGER,onBack);
             
         }
 
@@ -39,8 +39,7 @@ package dataoncloud.view
         {
             return [ ApplicationFacade.VIEW_QUERY_EXPLORER,
             		ApplicationFacade.INFO_SQL_QUERY,
-            		ApplicationFacade.SQL_RESULT_XML,
-            		ApplicationFacade.VIEW_CONNECTION_MANAGER ];
+            		ApplicationFacade.SQL_RESULT_XML];
         }
          
         override public function handleNotification( note:INotification ):void 
@@ -49,6 +48,7 @@ package dataoncloud.view
             switch ( note.getName() ) 
             {
                 case ApplicationFacade.VIEW_QUERY_EXPLORER:
+                	this.queryExplorer.clearText();
                     this.queryExplorer.connection=note.getBody();
                 break;
 				case ApplicationFacade.INFO_SQL_QUERY:
@@ -69,10 +69,6 @@ package dataoncloud.view
                     	for(j=0;j<columnName.length;j++)
                     		(this.queryExplorer.sqlresult.columns[j] as DataGridColumn).headerText=columnName[j];                          	
 				break;
-                case ApplicationFacade.VIEW_CONNECTION_MANAGER:
-                	this.queryExplorer.clearText();
-                break;
-
             }
         }
         
@@ -91,9 +87,8 @@ package dataoncloud.view
         {        	
         	sendNotification(ApplicationFacade.CANCEL_QUERY,null);
         }
-        private function onView(event:Event):void
+        private function onBack(event:Event):void
         {
-            this.queryExplorer.clearText();
             sendNotification(ApplicationFacade.VIEW_CONNECTION_MANAGER,null);
         }
     }

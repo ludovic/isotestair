@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="444" height="560" xmlns:merapi="merapi.*" >
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:merapi="merapi.*" >
 <mx:Script>
 	<![CDATA[
 		import dataoncloud.view.events.DocEvent;
@@ -23,18 +23,21 @@
 
             public function clearText():void
             {
-            	requette.text='';
-            	sqlresult.dataProvider = {};
-            	responseSQL.text='';            	
+            	if(requette!=null)
+            		requette.text='';
+            	if(sqlresult!=null)
+            		sqlresult.dataProvider = {};
+            	if(responseSQL!=null)
+            		responseSQL.text='';            	
             }
 	]]>
 </mx:Script>
     <mx:TabNavigator x="10" y="10" width="422" height="527">
-        <mx:Canvas label="Base de données" width="100%" height="100%" id="canvas3">
+        <mx:Canvas label="Data Base" width="100%" height="100%" id="canvas3">
    
                 <mx:TextArea width="397" height="157" x="10" y="36" id="requette"/>
            
-                <mx:Button label="Executer" x="10" y="210" click="dispatchEvent(new Event(EXECUTE_QUERY,true));" id="button2"/>
+                <mx:Button label="Execute" x="10" y="210" click="dispatchEvent(new Event(EXECUTE_QUERY,true));" id="button2"/>
             
                 <mx:DataGrid width="397" height="151" x="10" y="303" id="sqlresult">
                     
@@ -44,7 +47,7 @@
             
                 <mx:Button x="12" y="270" label="Cancel" click="dispatchEvent(new Event(CANCEL_QUERY,true));"/>
             
-                <mx:Button x="10" y="462" label="Retour" click="dispatchEvent(new Event(VIEW_CONNECTION_MANAGER,true));"/>
+                <mx:Button x="10" y="462" label="Back" click="dispatchEvent(new Event(VIEW_CONNECTION_MANAGER,true));"/>
             
                 <mx:Label text="SQL :" x="10" y="10"/>
             

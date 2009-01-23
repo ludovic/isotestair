@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="444" height="560" xmlns:merapi="merapi.*">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"  xmlns:merapi="merapi.*">
 	<mx:Script>
 		<![CDATA[
 		import dataoncloud.view.events.DocEvent;
@@ -157,14 +157,14 @@
 		]]>
 	</mx:Script>
     <mx:TabNavigator x="10" y="10" width="422" height="527">
-        <mx:Canvas label="Bases de données" width="100%" height="100%" id="canvas3">
+        <mx:Canvas label="Data Bases" width="100%" height="100%" id="canvas3">
     
     
     <mx:Form x="50" y="34" width="330" height="117" id="form1" borderStyle="solid" borderColor="#DEDCDC">
         <mx:FormItem label="Login">
             <mx:TextInput id="txtLogin"/>
         </mx:FormItem>
-        <mx:FormItem label="Mot de passe">
+        <mx:FormItem label="Password">
             <mx:TextInput id="txtMdp" displayAsPassword="true"/>
         </mx:FormItem>
         <mx:FormItem label="Type">
@@ -228,7 +228,7 @@
     </mx:ViewStack>
     
         </mx:Canvas>
-        <mx:Canvas label="Fichiers" width="100%" height="100%" id="canvas4">
+        <mx:Canvas label="Files" width="100%" height="100%" id="canvas4">
 			<mx:Label y="33" text="Source file:" left="32" width="68"/>
 			<mx:TextInput y="31" right="163" left="108" id="sourceTxt" editable="false"/>
 			<mx:Button y="31" label="Choose" right="84" click="chooseSource();"/>
