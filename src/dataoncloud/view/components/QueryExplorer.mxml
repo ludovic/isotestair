@@ -39,7 +39,7 @@
            
                 <mx:Button label="Execute" x="10" y="210" click="dispatchEvent(new Event(EXECUTE_QUERY,true));" id="button2"/>
             
-                <mx:DataGrid width="397" height="151" x="10" y="303" id="sqlresult">
+                <mx:DataGrid width="397" height="151" x="10" y="303" id="sqlresult" horizontalScrollPolicy="auto">
                     
                 </mx:DataGrid>
            

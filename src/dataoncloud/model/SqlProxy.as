@@ -117,6 +117,25 @@ package dataoncloud.model
     	{
     		var ds:String;
     		ds = this.rewriteURL(mySQLQuery.connection);
+    		switch (mySQLQuery.connection.type)
+    		{
+			// oracle
+//			case 0:
+//				 ds = connection.login + "##" + connection.mdp + "##" + connection.type + "##" + "jdbc:oracle:thin:@"+connection.host+":"+connection.port+":"+connection.sid;
+//			break;
+			//SQL server
+//			case 2:
+//				ds = connection.login + "##" + connection.mdp + "##" + connection.type + "##" +  "jdbc:sqlserver://" + connection.host + ":" + connection.port;
+//			break;
+			//MYsql
+			case 3:
+				ds = ds+"/"+mySQLQuery.connection.database;
+			break;
+			postgre
+			case 4:				
+				ds = ds+"/"+mySQLQuery.connection.database;
+			break;
+    		}
 				
     		bridgeInst.sendMessage( new Message( 'sqlRequest_request', ds + "##" + mySQLQuery.query ) );
     	}

@@ -58,7 +58,7 @@
    
                 <mx:Button label="Load" x="10" y="66" click="dispatchEvent(new Event(LOAD_SHEET,true));" id="button2"/>
             
-                <mx:DataGrid width="397" height="358" x="10" y="96" id="excelResult">
+                <mx:DataGrid width="397" height="358" x="10" y="96" id="excelResult" horizontalScrollPolicy="on">
                     
                 </mx:DataGrid>
             
